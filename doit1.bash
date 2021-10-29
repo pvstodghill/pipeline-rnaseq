@@ -32,6 +32,14 @@ for i in $SAMPLES_INDICES ; do
     fi
 done
 
+if [ "$PACKAGES_FROM" = howto ] ; then
+    echo 1>&2 '# Ensuring entries in packages.yaml are downloaded...'
+    (
+	set -x
+	./howto/howto -f packages.yaml -p '*'
+    )
+fi
+
 # ------------------------------------------------------------------------
 # Step 1. FASTQC, round 1
 # ------------------------------------------------------------------------
