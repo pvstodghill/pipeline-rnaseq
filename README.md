@@ -21,4 +21,5 @@ conda install -y fastqc
 conda install -y bioconductor-deseq2
 # v-- https://github.com/bioconda/bioconda-recipes/issues/12100#issuecomment-911569353
 conda install -y "samtools>=1.10"
+conda install -y subread
 ```

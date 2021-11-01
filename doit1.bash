@@ -18,8 +18,10 @@ echo 1>&2 '# Making copies of reference genome...'
 
 echo 1>&2 '##' ${INPUTS}/genome.fna "<-" "${REFERENCES_GENOME}"
 cp "${REFERENCES_GENOME}" ${INPUTS}/genome.fna
-echo 1>&2 '##' ${INPUTS}/genome.gff "<-" "${REFERENCES_ANNOTATION}"
-cp "${REFERENCES_ANNOTATION}" ${INPUTS}/genome.gff
+echo 1>&2 '##' ${INPUTS}/annotation.gff "<-" "${REFERENCES_ANNOTATION_GFF}"
+cp "${REFERENCES_ANNOTATION_GFF}" ${INPUTS}/annotation.gff
+echo 1>&2 '##' ${INPUTS}/annotation.gtf "<-" "${REFERENCES_ANNOTATION_GTF}"
+cp "${REFERENCES_ANNOTATION_GTF}" ${INPUTS}/annotation.gtf
 
 echo 1>&2 '# Making copies of raw reads...'
 
@@ -174,15 +176,16 @@ for i in $SAMPLES_INDICES ; do
 done
 
 # ------------------------------------------------------------------------
-# Step 5. Generating GFF files
+# Step 5. Generating GFF files + Making profiles
 # ------------------------------------------------------------------------
 
-echo 1>&2 '# Converting the .bam files to .gff files'
+PROFILES=data/05_profiles
+BAMGFF=${PROFILES}/tmp
 
-BAMGFF=data/05_bamgff
-
-rm -rf ${BAMGFF}
+rm -rf ${PROFILES}
 mkdir -p ${BAMGFF}
+
+echo 1>&2 '# Converting the .bam files to .gff files'
 
 for i in $SAMPLES_INDICES ; do
     echo 1>&2 '##' $i':' ${BAMGFF}/aligned_$i.gff.gz
@@ -197,16 +200,7 @@ for i in $SAMPLES_INDICES ; do
     fi
 done
 
-# ------------------------------------------------------------------------
-# Step 6. Making profiles
-# ------------------------------------------------------------------------
-
 echo 1>&2 '# Making profiles'
-
-PROFILES=data/06_profiles
-
-rm -rf ${PROFILES}
-mkdir -p ${PROFILES}
 
 for i in $SAMPLES_INDICES ; do
     name=${SAMPLES_NAME[i]}
@@ -216,6 +210,60 @@ for i in $SAMPLES_INDICES ; do
 	| ./scripts/gff2profiles -e -s -n -d ${PROFILES} \
 				 ${BOWTIE2}/genome+phix.fna $name
 done
+
+# ------------------------------------------------------------------------
+# Step 6. Make count tables
+# ------------------------------------------------------------------------
+
+echo 1>&2 '# Making count tables'
+
+COUNTS=data/06_counts
+rm -rf ${COUNTS}
+mkdir -p ${COUNTS}
+
+FEATURECOUNTS_ARGS=
+FEATURECOUNTS_ARGS+=" -t gene"
+FEATURECOUNTS_ARGS+=" -g gene_id"
+FEATURECOUNTS_ARGS+=" -f" # count at feature level
+
+FEATURECOUNTS_ARGS+=" -O" # Assign reads to all their overlapping features
+
+#FEATURECOUNTS_ARGS+=" -M" # all multi-mapping reads reported alignments will be counted
+##FEATURECOUNTS_ARGS+=" --fraction" # Assign fractional counts to features
+#FEATURECOUNTS_ARGS+=" --primary" # Count primary alignments only !(0x100)
+
+FEATURECOUNTS_ARGS+=" -s 1" # stranded
+#FEATURECOUNTS_ARGS+=" -s 2" # reverse-stranded
+
+
+FEATURECOUNTS_ARGS+=" -p" # fragments (or pairs) will be counted instead of reads (<v2.0.2)
+#FEATURECOUNTS_ARGS+=" -p" # input data contains paired-end reads. (>=v2.0.2)
+#FEATURECOUNTS_ARGS+=" --countReadPairs" # Count read pairs (fragments) instead of reads
+
+FEATURECOUNTS_ARGS+=" -B" # Only count read pairs that have both ends aligned.
+FEATURECOUNTS_ARGS+=" -P" # Check validity of paired-end distance
+FEATURECOUNTS_ARGS+=" -C" # Only count concordant reads
+
+FEATURECOUNTS_ARGS+=" -T ${THREADS}"
+
+FEATURECOUNTS_ARGS+=" "
+FEATURECOUNTS_ARGS+=" "
+
+
+# FIXME: cp local/annotations.gtf ${COUNTS}/annotation.gtf
+fgrep $'\t'gene$'\t' ${INPUTS}/annotation.gtf \
+      | ./scripts/sanitize-gtf-for-featureCounts \
+	    > ${COUNTS}/annotation.gtf
+
+for i in $SAMPLES_INDICES ; do
+
+    featureCounts $FEATURECOUNTS_ARGS \
+    		  -a ${COUNTS}/annotation.gtf \
+    		  -o ${COUNTS}/counts_$i.txt \
+    		  ${BOWTIE2}/aligned_$i.bam
+
+done
+
 
 # ------------------------------------------------------------------------
 # Step 7. Run DESeq2
@@ -231,20 +279,16 @@ DESEQ2=data/07_deseq2
 rm -rf ${DESEQ2}
 mkdir -p ${DESEQ2}/temp
 
-if [ -z "${REFERENCES_FEATURE}" ] ; then
-    cp ${INPUTS}/genome.gff ${DESEQ2}/temp/regions.gff
-else
-    egrep $'\t'"${REFERENCES_FEATURE}"$'\t' ${INPUTS}/genome.gff > ${DESEQ2}/temp/regions.gff
-fi
+cp ${COUNTS}/annotation.gtf ${DESEQ2}/temp/regions.gtf
 
-./scripts/make-counts-table-from-gffs \
-    ${DESEQ2}/temp/regions.gff \
-    52551:${BAMGFF}/aligned_0.gff.gz \
-    52552:${BAMGFF}/aligned_1.gff.gz \
-    52553:${BAMGFF}/aligned_2.gff.gz \
-    WT1:${BAMGFF}/aligned_3.gff.gz \
-    WT2:${BAMGFF}/aligned_4.gff.gz \
-    WT3:${BAMGFF}/aligned_5.gff.gz \
+./scripts/make-counts-table-from-featurecounts \
+    ${DESEQ2}/temp/regions.gtf \
+    52551:${COUNTS}/counts_0.txt \
+    52552:${COUNTS}/counts_1.txt \
+    52553:${COUNTS}/counts_2.txt \
+    WT1:${COUNTS}/counts_3.txt \
+    WT2:${COUNTS}/counts_4.txt \
+    WT3:${COUNTS}/counts_5.txt \
     > ${DESEQ2}/temp/counts.txt
 
 # ------------------------------------------------------------------------
@@ -287,7 +331,7 @@ STATS=data/08_stats
 rm -rf ${STATS}
 mkdir -p ${STATS}/temp
 
-cat ${INPUTS}/genome.gff inputs/phix.gff \
+cat ${INPUTS}/annotation.gff inputs/phix.gff \
     | egrep -v '^#' | fgrep -v $'\t'region$'\t' \
 			    > ${STATS}/temp/regions.gff
 

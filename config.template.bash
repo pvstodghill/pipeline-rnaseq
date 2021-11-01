@@ -6,7 +6,8 @@ fi
 
 REFERENCES_NAME=DC3000
 REFERENCES_GENOME=$(ls inputs/ncbi_dataset/data/GCF_000007805.1/*.fna)
-REFERENCES_ANNOTATION=inputs/regions-from-iaa-rnaseq.gff
+REFERENCES_ANNOTATION_GFF=inputs/regions-from-iaa-rnaseq.gff
+REFERENCES_ANNOTATION_GTF=inputs/regions-from-iaa-rnaseq.gtf
 REFERENCES_FEATURE=
 
 ILLUMINA=/home/ps27/midden/2020/10-30-5255-rnaseq-brc-downloads/
