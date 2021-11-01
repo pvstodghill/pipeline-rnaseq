@@ -1,5 +1,8 @@
 # pipeline-rnaseq
 
+**N.B. this branch is for further development of the "old-and-broken"
+version of the pipeline.**
+
 Pipeline for analyzing _in-vitro_ RNA-Seq experiments.
 
 Setting a [Conda](https://conda.io) environment for the pipeline,
