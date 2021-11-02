@@ -30,10 +30,12 @@ for i in $SAMPLES_INDICES ; do
     name=${SAMPLES_NAME[i]}
     echo 1>&2 '##' $i": Profiles for ${name}"
 
-    ./scripts/sam2profiles $opt_12 $opt_r -e -s -n -d ${PROFILES} \
-			   ${BOWTIE2}/aligned_$i.bam \
-			   ${BOWTIE2}/genome+phix.fna \
-			   $name
+    samtools view -h ${BOWTIE2}/aligned_$i.bam \
+	| ./scripts/sam2profiles $opt_12 $opt_r \
+				 -e -s -n \
+				 -d ${PROFILES} \
+				 -t ${name}
+
 done
 
 # ------------------------------------------------------------------------
