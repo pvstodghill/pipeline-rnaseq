@@ -24,7 +24,7 @@ for f in ${DESEQ2}/*.gff ; do
     cat $f | ./scripts/split-gff -n -d ${RESULTS} $name
 done
 
-# cp ${STATS}/stats.txt ${RESULTS}/stats.txt
+ cp ${STATS}/stats.txt ${RESULTS}/stats.txt
 # ./scripts/tsv2xlsx -o ${RESULTS}/stats.xlsx ${STATS}/stats.txt
 
 # ------------------------------------------------------------------------
