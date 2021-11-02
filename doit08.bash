@@ -18,10 +18,6 @@ STATS=data/08_stats
 rm -rf ${STATS}
 mkdir -p ${STATS}/temp
 
-cat ${INPUTS}/annotation.gff inputs/phix.gff \
-    | egrep -v '^#' | fgrep -v $'\t'region$'\t' \
-			    > ${STATS}/temp/regions.gff
-
 # ------------------------------------------------------------------------
 
 FEATURECOUNTS_ARGS=
