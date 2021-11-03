@@ -11,7 +11,7 @@ COUNTS=data/06_counts
 echo 1>&2 '# Running DESeq2...'
 
 CHANGE_CUTOFF=2.0
-TAG=_WT-5255
+TAG=_${SAMPLES_TREATMENT[0]}-${SAMPLES_TREATMENT[3]}
 
 DESEQ2=data/07_deseq2
 
@@ -22,12 +22,12 @@ cp ${COUNTS}/annotation.gtf ${DESEQ2}/temp/regions.gtf
 
 ./scripts/make-counts-table-from-featurecounts \
     ${DESEQ2}/temp/regions.gtf \
-    52551:${COUNTS}/counts_0.txt \
-    52552:${COUNTS}/counts_1.txt \
-    52553:${COUNTS}/counts_2.txt \
-    WT1:${COUNTS}/counts_3.txt \
-    WT2:${COUNTS}/counts_4.txt \
-    WT3:${COUNTS}/counts_5.txt \
+    ${SAMPLES_NAME[0]}:${COUNTS}/counts_0.txt \
+    ${SAMPLES_NAME[1]}:${COUNTS}/counts_1.txt \
+    ${SAMPLES_NAME[2]}:${COUNTS}/counts_2.txt \
+    ${SAMPLES_NAME[3]}:${COUNTS}/counts_3.txt \
+    ${SAMPLES_NAME[4]}:${COUNTS}/counts_4.txt \
+    ${SAMPLES_NAME[5]}:${COUNTS}/counts_5.txt \
     > ${DESEQ2}/temp/counts.txt
 
 # ------------------------------------------------------------------------
@@ -37,8 +37,12 @@ cp ${COUNTS}/annotation.gtf ${DESEQ2}/temp/regions.gtf
 		      -d ${DESEQ2}/temp \
 		      -t ${TAG} \
 		      -c ${DESEQ2}/temp/counts.txt \
- 		     WT:WT1 WT:WT2 WT:WT3 \
- 		     5255:52551 5255:52552 5255:52553
+		      ${SAMPLES_TREATMENT[0]}:${SAMPLES_NAME[0]} \
+		      ${SAMPLES_TREATMENT[1]}:${SAMPLES_NAME[1]} \
+		      ${SAMPLES_TREATMENT[2]}:${SAMPLES_NAME[2]} \
+		      ${SAMPLES_TREATMENT[3]}:${SAMPLES_NAME[3]} \
+		      ${SAMPLES_TREATMENT[4]}:${SAMPLES_NAME[4]} \
+		      ${SAMPLES_TREATMENT[5]}:${SAMPLES_NAME[5]}
 
 
 # ------------------------------------------------------------------------

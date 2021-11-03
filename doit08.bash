@@ -60,7 +60,14 @@ featureCounts $FEATURECOUNTS_ARGS \
 
 
 (
-    echo gene_biotype$'\t'52551$'\t'52552$'\t'52553$'\t'WT1$'\t'WT2$'\t'WT3
+    echo -n gene_biotype
+    echo -n $'\t'${SAMPLES_NAME[0]}
+    echo -n $'\t'${SAMPLES_NAME[1]}
+    echo -n $'\t'${SAMPLES_NAME[2]}
+    echo -n $'\t'${SAMPLES_NAME[3]}
+    echo -n $'\t'${SAMPLES_NAME[4]}
+    echo -n $'\t'${SAMPLES_NAME[5]}
+    echo ''
     tail -n+3 ${STATS}/raw_counts.txt \
 	| cut -f 1,7-
 ) > ${STATS}/stats.txt
