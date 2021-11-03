@@ -5,12 +5,12 @@ if [ -e /programs/docker/bin/docker1 ] ; then
 fi
 
 REFERENCE_NAME=DC3000
-REFERENCE_GENOME=$(ls inputs/ncbi_dataset/data/GCF_000007805.1/*.fna)
-REFERENCE_ANNOTATION_GFF=inputs/regions-from-iaa-rnaseq.gff
-REFERENCE_ANNOTATION_GTF=inputs/regions-from-iaa-rnaseq.gtf
+REFERENCE_GENOME=local/DC3000_refseq.fna
+REFERENCE_ANNOTATION_GFF=local/DC3000_refseq.gff
+REFERENCE_ANNOTATION_GTF=local/DC3000_refseq.gtf
 REFERENCE_FEATURE=
 
-ILLUMINA=/home/ps27/midden/2020/10-30-5255-rnaseq-brc-downloads/
+ILLUMINA=$HOME/midden/2020/10-30-5255-rnaseq-brc-downloads/
 
 SAMPLES_NAME[0]=WT1
 SAMPLES_TREATMENT[0]=WT
@@ -41,3 +41,5 @@ SAMPLES_NAME[5]=52553
 SAMPLES_TREATMENT[5]=5255
 SAMPLES_R1[5]=$(ls ${ILLUMINA}/*_5255_3_*_R1.fastq.gz)
 SAMPLES_R2[5]=$(ls ${ILLUMINA}/*_5255_3_*_R2.fastq.gz)
+
+ADDITIONAL_BACTERIA_GENES=local/srna.gtf
