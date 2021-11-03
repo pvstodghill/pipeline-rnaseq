@@ -56,4 +56,4 @@ PACKAGES_FROM=howto
 #THREADS=32
 
 # fixme - document
-#RUN_FASTQC_AFTER_FASTP=yes
+#RUN_FALCO_AFTER_FASTP=yes

@@ -17,7 +17,7 @@ conda config --add channels conda-forge
 conda install -y bowtie2
 # v-- for me 0.23.x hangs
 conda install -y fastp=0.22.0
-conda install -y fastqc
+conda install -y falco
 conda install -y bioconductor-deseq2
 # v-- https://github.com/bioconda/bioconda-recipes/issues/12100#issuecomment-911569353
 conda install -y "samtools>=1.10"

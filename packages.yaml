@@ -27,13 +27,12 @@ version: 0.22.0__2021-08-31
 commands:
   - fastp
   
-# https://www.bioinformatics.babraham.ac.uk/projects/fastqc/
+# https://github.com/smithlabcode/falco
 ---
-image: pvstodghill/fastqc
-version: 0.11.9__2020-01-09
-java: true
+image: pvstodghill/falco
+version: 0.3.0__2021-11-03
 commands:
-  - fastqc
+  - falco
 
 # https://github.com/samtools/samtools
 ---

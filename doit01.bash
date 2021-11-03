@@ -5,26 +5,26 @@
 INPUTS=data/00_inputs
 
 # ------------------------------------------------------------------------
-# Step 1. FASTQC, round 1
+# Step 1. FALCO, round 1
 # ------------------------------------------------------------------------
 
-echo 1>&2 '# Running FASTQC on raw reads'
+echo 1>&2 '# Running FALCO on raw reads'
 
-FASTQC1=data/01_fastqc
+FALCO1=data/01_falco
 
-rm -rf ${FASTQC1}
+rm -rf ${FALCO1}
 
 for i in $SAMPLES_INDICES ; do
-    echo 1>&2 '##' $i':' ${FASTQC1}/${SAMPLES_NAME[$i]}_R1
-    mkdir -p ${FASTQC1}/${SAMPLES_NAME[$i]}_R1
-    fastqc -t ${THREADS} \
-	   -o ${FASTQC1}/${SAMPLES_NAME[$i]}_R1 \
+    echo 1>&2 '##' $i':' ${FALCO1}/${SAMPLES_NAME[$i]}_R1
+    mkdir -p ${FALCO1}/${SAMPLES_NAME[$i]}_R1
+    falco -t ${THREADS} \
+	   -o ${FALCO1}/${SAMPLES_NAME[$i]}_R1 \
 	   ${INPUTS}/raw_${i}_R1.fastq.gz
     if [ "$PE" ] ; then
-	echo 1>&2 '##' $i':' ${FASTQC1}/${SAMPLES_NAME[$i]}_R2
-	mkdir -p ${FASTQC1}/${SAMPLES_NAME[$i]}_R2
-	fastqc -t ${THREADS} \
-	       -o ${FASTQC1}/${SAMPLES_NAME[$i]}_R2 \
+	echo 1>&2 '##' $i':' ${FALCO1}/${SAMPLES_NAME[$i]}_R2
+	mkdir -p ${FALCO1}/${SAMPLES_NAME[$i]}_R2
+	falco -t ${THREADS} \
+	       -o ${FALCO1}/${SAMPLES_NAME[$i]}_R2 \
 	       ${INPUTS}/raw_${i}_R2.fastq.gz
     fi
 done
