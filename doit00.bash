@@ -16,12 +16,12 @@ mkdir -p ${INPUTS}
 
 echo 1>&2 '# Making copies of reference genome...'
 
-echo 1>&2 '##' ${INPUTS}/genome.fna "<-" "${REFERENCES_GENOME}"
-cp "${REFERENCES_GENOME}" ${INPUTS}/genome.fna
-echo 1>&2 '##' ${INPUTS}/annotation.gff "<-" "${REFERENCES_ANNOTATION_GFF}"
-cp "${REFERENCES_ANNOTATION_GFF}" ${INPUTS}/annotation.gff
-echo 1>&2 '##' ${INPUTS}/annotation.gtf "<-" "${REFERENCES_ANNOTATION_GTF}"
-cp "${REFERENCES_ANNOTATION_GTF}" ${INPUTS}/annotation.gtf
+echo 1>&2 '##' ${INPUTS}/genome.fna "<-" "${REFERENCE_GENOME}"
+cp "${REFERENCE_GENOME}" ${INPUTS}/genome.fna
+echo 1>&2 '##' ${INPUTS}/annotation.gff "<-" "${REFERENCE_ANNOTATION_GFF}"
+cp "${REFERENCE_ANNOTATION_GFF}" ${INPUTS}/annotation.gff
+echo 1>&2 '##' ${INPUTS}/annotation.gtf "<-" "${REFERENCE_ANNOTATION_GTF}"
+cp "${REFERENCE_ANNOTATION_GTF}" ${INPUTS}/annotation.gtf
 
 echo 1>&2 '# Making copies of raw reads...'
 
