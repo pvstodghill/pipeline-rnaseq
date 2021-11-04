@@ -1,13 +1,5 @@
 #! /bin/bash
 
-if [ -e /programs/docker/bin/docker1 ] ; then
-    export HOWTO_DOCKER_CMD=/programs/docker/bin/docker1
-fi
-
-if [ -e /programs/parallel/bin/parallel ] ; then
-    export PARALLEL_CMD=/programs/parallel/bin/parallel
-fi
-
 REFERENCE_NAME=DC3000
 REFERENCE_GENOME=local/DC3000_refseq.fna
 REFERENCE_ANNOTATION_GTF=local/DC3000_refseq.gtf
@@ -46,3 +38,23 @@ SAMPLES_R1[5]=$(ls ${ILLUMINA}/*_5255_3_*_R1.fastq.gz)
 SAMPLES_R2[5]=$(ls ${ILLUMINA}/*_5255_3_*_R2.fastq.gz)
 
 ADDITIONAL_BACTERIA_GENES=local/srna.gtf
+
+# ------------------------------------------------------------------------
+
+if [ -e /programs/docker/bin/docker1 ] ; then
+    export HOWTO_DOCKER_CMD=/programs/docker/bin/docker1
+fi
+
+if [ -e /programs/docker/bin/docker1 ] ; then
+    export HOWTO_DOCKER_CMD=/programs/docker/bin/docker1
+fi
+
+# Uncomment to get packages from HOWTO
+PACKAGES_FROM=howto
+
+# uncomment to use conda
+# PACKAGES_FROM=conda
+# PACKAGES_ENV=rnaseq
+
+# Override the default number of threads (nproc --all)
+#THREADS=32
