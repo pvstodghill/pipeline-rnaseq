@@ -21,9 +21,11 @@ else
     opt_12=-1
 fi
 
-# fixme
-opt_r=-r
-
+case X"$ORIENTATION"X in
+    XforwardX) opt_r= ;;
+    XreverseX) opt_r=-r ;;
+    X*X) echo 1>&2 cannot happen ; exit 1
+esac
 
 (
     for i in $SAMPLES_INDICES ; do

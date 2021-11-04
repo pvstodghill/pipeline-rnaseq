@@ -81,6 +81,44 @@ function run_commands {
 
 # ------------------------------------------------------------------------
 
+function init_FEATURECOUNTS_ARGS {
+    FEATURECOUNTS_ARGS=
+
+    FEATURECOUNTS_ARGS+=" -O" # Assign reads to all their overlapping features
+
+    #FEATURECOUNTS_ARGS+=" -M" # all multi-mapping reads reported alignments will be counted
+    ##FEATURECOUNTS_ARGS+=" --fraction" # Assign fractional counts to features
+    #FEATURECOUNTS_ARGS+=" --primary" # Count primary alignments only !(0x100)
+
+    case X"$ORIENTATION"X in
+	XforwardX)
+	    FEATURECOUNTS_ARGS+=" -s 1" # stranded
+	    ;;
+	XreverseX)
+	    FEATURECOUNTS_ARGS+=" -s 2" # reverse-stranded
+	    ;;
+	X*X) echo 1>&2 cannot happen ; exit 1
+    esac
+
+    if [ "$PE" ] ; then
+	if ( conda run -n rnaseq featureCounts -h 2>&1 | fgrep -qs -e --countReadPairs ) ; then
+	    FEATURECOUNTS_ARGS+=" -p" # input data contains paired-end reads. (>=v2.0.2)
+	    FEATURECOUNTS_ARGS+=" --countReadPairs" # Count read pairs (fragments) instead of reads
+	else
+	    FEATURECOUNTS_ARGS+=" -p" # fragments (or pairs) will be counted instead of reads (<v2.0.2)
+	fi
+
+	FEATURECOUNTS_ARGS+=" -B" # Only count read pairs that have both ends aligned.
+	FEATURECOUNTS_ARGS+=" -P" # Check validity of paired-end distance
+	FEATURECOUNTS_ARGS+=" -C" # Only count concordant reads
+    fi
+
+    FEATURECOUNTS_ARGS+=" -T ${THREADS}"
+
+}
+
+# ------------------------------------------------------------------------
+
 set -e
 set -o pipefail
 

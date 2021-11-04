@@ -37,7 +37,12 @@ SAMPLES_R2[5]=example/52553_R2.fastq.gz
 
 # ------------------------------------------------------------------------
 
+# Arguments to FASTP
 FASTP_ARGS="--trim_front1 1 --trim_front2 1 --adapter_sequence CTGTCTCTTATACACATCT"
+
+# Orientation of reads relative to original RNA molecules
+#ORIENTATION=forward
+ORIENTATION=reverse
 
 # ------------------------------------------------------------------------
 

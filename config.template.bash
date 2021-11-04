@@ -41,7 +41,12 @@ ADDITIONAL_BACTERIA_GENES=local/srna.gtf
 
 # ------------------------------------------------------------------------
 
+# Arguments to FASTP
 FASTP_ARGS="--trim_front1 1 --trim_front2 1 --adapter_sequence CTGTCTCTTATACACATCT"
+
+# Orientation of reads relative to original RNA molecules
+#ORIENTATION=forward
+ORIENTATION=reverse
 
 # ------------------------------------------------------------------------
 

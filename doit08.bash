@@ -20,43 +20,22 @@ mkdir -p ${STATS}/temp
 
 # ------------------------------------------------------------------------
 
-FEATURECOUNTS_ARGS=
+init_FEATURECOUNTS_ARGS
+
 FEATURECOUNTS_ARGS+=" -t gene"
 FEATURECOUNTS_ARGS+=" -g gene_biotype"
 #FEATURECOUNTS_ARGS+=" -f" # count at feature (exon) level, not the meta-feature (gene) level
 
-FEATURECOUNTS_ARGS+=" -O" # Assign reads to all their overlapping features
-
-#FEATURECOUNTS_ARGS+=" -M" # all multi-mapping reads reported alignments will be counted
-##FEATURECOUNTS_ARGS+=" --fraction" # Assign fractional counts to features
-#FEATURECOUNTS_ARGS+=" --primary" # Count primary alignments only !(0x100)
-
-FEATURECOUNTS_ARGS+=" -s 1" # stranded
-#FEATURECOUNTS_ARGS+=" -s 2" # reverse-stranded
-
-
-FEATURECOUNTS_ARGS+=" -p" # fragments (or pairs) will be counted instead of reads (<v2.0.2)
-#FEATURECOUNTS_ARGS+=" -p" # input data contains paired-end reads. (>=v2.0.2)
-#FEATURECOUNTS_ARGS+=" --countReadPairs" # Count read pairs (fragments) instead of reads
-
-FEATURECOUNTS_ARGS+=" -B" # Only count read pairs that have both ends aligned.
-FEATURECOUNTS_ARGS+=" -P" # Check validity of paired-end distance
-FEATURECOUNTS_ARGS+=" -C" # Only count concordant reads
-
-FEATURECOUNTS_ARGS+=" -T ${THREADS}"
-
-FEATURECOUNTS_ARGS+=" "
-FEATURECOUNTS_ARGS+=" "
 
 featureCounts $FEATURECOUNTS_ARGS \
-    		  -a ${COUNTS}/annotation.gtf \
-    		  -o ${STATS}/raw_counts.txt \
-    		  ${BOWTIE2}/aligned_0.bam \
-    		  ${BOWTIE2}/aligned_1.bam \
-    		  ${BOWTIE2}/aligned_2.bam \
-    		  ${BOWTIE2}/aligned_3.bam \
-    		  ${BOWTIE2}/aligned_4.bam \
-    		  ${BOWTIE2}/aligned_5.bam \
+    	      -a ${COUNTS}/annotation.gtf \
+    	      -o ${STATS}/raw_counts.txt \
+    	      ${BOWTIE2}/aligned_0.bam \
+    	      ${BOWTIE2}/aligned_1.bam \
+    	      ${BOWTIE2}/aligned_2.bam \
+    	      ${BOWTIE2}/aligned_3.bam \
+    	      ${BOWTIE2}/aligned_4.bam \
+    	      ${BOWTIE2}/aligned_5.bam
 
 
 (
