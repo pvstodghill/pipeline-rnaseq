@@ -18,6 +18,12 @@ STATS=data/08_stats
 rm -rf ${STATS}
 mkdir -p ${STATS}/temp
 
+
+cp ${COUNTS}/annotation.gtf ${STATS}/
+if [ "${QC_GENES}" ] ; then
+    cat "${QC_GENES}" >> ${STATS}/annotation.gtf
+fi
+
 # ------------------------------------------------------------------------
 
 init_FEATURECOUNTS_ARGS
@@ -28,7 +34,7 @@ FEATURECOUNTS_ARGS+=" -g gene_biotype"
 
 
 featureCounts $FEATURECOUNTS_ARGS \
-    	      -a ${COUNTS}/annotation.gtf \
+    	      -a ${STATS}/annotation.gtf \
     	      -o ${STATS}/raw_counts.txt \
     	      ${BOWTIE2}/aligned_0.bam \
     	      ${BOWTIE2}/aligned_1.bam \

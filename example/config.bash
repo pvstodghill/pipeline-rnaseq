@@ -35,6 +35,9 @@ SAMPLES_TREATMENT[5]=5255
 SAMPLES_R1[5]=example/52553_R1.fastq.gz
 SAMPLES_R2[5]=example/52553_R2.fastq.gz
 
+ADDITIONAL_GENES=
+QC_GENES=example/NC_004632_qc.gtf
+
 # ------------------------------------------------------------------------
 
 # Arguments to FASTP

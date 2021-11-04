@@ -1,0 +1,2 @@
+NC_004632.1	RefSeq	gene	9553	10932	.	+	.	gene_id "PSPTO_RS29120"; transcript_id ""; db_xref "GeneID:1187388"; gene_biotype "qc_sense"
+NC_004632.1	RefSeq	gene	9553	10932	.	-	.	gene_id "PSPTO_RS29120"; transcript_id ""; db_xref "GeneID:1187388"; gene_biotype "qc_antisense"
