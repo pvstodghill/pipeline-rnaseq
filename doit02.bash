@@ -21,6 +21,7 @@ for i in $SAMPLES_INDICES ; do
 	fastp \
 		 --thread ${THREADS} \
 		 --trim_front1 1 --trim_front2 1 --adapter_sequence CTGTCTCTTATACACATCT \
+		 --dont_eval_duplication \
 		 --json ${FASTP}/${SAMPLES_NAME[$i]}.json \
 		 --html ${FASTP}/${SAMPLES_NAME[$i]}.html \
 		 --in1 ${INPUTS}/raw_${i}_R1.fastq.gz \
@@ -34,6 +35,7 @@ for i in $SAMPLES_INDICES ; do
 	fastp \
 		 --thread ${THREADS} \
 		 --trim_front1 1 --adapter_sequence CTGTCTCTTATACACATCT \
+		 --dont_eval_duplication \
 		 --json ${FASTP}/${SAMPLES_NAME[$i]}.json \
 		 --html ${FASTP}/${SAMPLES_NAME[$i]}.html \
 		 --in1 ${INPUTS}/raw_${i}_R1.fastq.gz \
