@@ -1,8 +1,5 @@
 #! /bin/bash
 
-set -e
-set -o pipefail
-
 HOWTO="./scripts/howto -q -T data/tmp -f packages.yaml"
 THREADS=$(nproc --all)
 
@@ -67,3 +64,21 @@ case X"$PACKAGES_FROM"X in
 	echo 1>&2 "Cannot happen"
 	exit 1
 esac
+
+# ------------------------------------------------------------------------
+
+PARALLEL_PATH=$(type -p parallel)
+
+function run_parallel {
+    if [ "$PARALLEL_PATH" ] ; then
+	eval $PARALLEL_PATH -j ${THREADS} -kv
+    else
+	bash -x
+    fi
+}
+
+# ------------------------------------------------------------------------
+
+set -e
+set -o pipefail
+

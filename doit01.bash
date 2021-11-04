@@ -14,20 +14,16 @@ FALCO1=data/01_falco
 
 rm -rf ${FALCO1}
 
-for i in $SAMPLES_INDICES ; do
-    echo 1>&2 '##' $i':' ${FALCO1}/${SAMPLES_NAME[$i]}_R1
-    mkdir -p ${FALCO1}/${SAMPLES_NAME[$i]}_R1
-    falco -t ${THREADS} \
-	   -o ${FALCO1}/${SAMPLES_NAME[$i]}_R1 \
-	   ${INPUTS}/raw_${i}_R1.fastq.gz
-    if [ "$PE" ] ; then
-	echo 1>&2 '##' $i':' ${FALCO1}/${SAMPLES_NAME[$i]}_R2
-	mkdir -p ${FALCO1}/${SAMPLES_NAME[$i]}_R2
-	falco -t ${THREADS} \
-	       -o ${FALCO1}/${SAMPLES_NAME[$i]}_R2 \
-	       ${INPUTS}/raw_${i}_R2.fastq.gz
-    fi
-done
+(
+    for i in $SAMPLES_INDICES ; do
+	mkdir -p ${FALCO1}/${SAMPLES_NAME[$i]}_R1
+	echo falco -q -o ${FALCO1}/${SAMPLES_NAME[$i]}_R1 ${INPUTS}/raw_${i}_R1.fastq.gz
+	if [ "$PE" ] ; then
+	    mkdir -p ${FALCO1}/${SAMPLES_NAME[$i]}_R2
+	    echo falco -q -o ${FALCO1}/${SAMPLES_NAME[$i]}_R2 ${INPUTS}/raw_${i}_R2.fastq.gz
+	fi
+    done
+) | run_parallel
 
 # ------------------------------------------------------------------------
 # Done.
