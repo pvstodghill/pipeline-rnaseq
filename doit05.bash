@@ -26,17 +26,17 @@ opt_r=-r
 
 
 (
-for i in $SAMPLES_INDICES ; do
+    for i in $SAMPLES_INDICES ; do
 
-    name=${SAMPLES_NAME[i]}
+	name=${SAMPLES_NAME[i]}
 
-    echo "samtools view -h ${BOWTIE2}/aligned_$i.bam \
+	echo "samtools view -h ${BOWTIE2}/aligned_$i.bam \
 	| ./scripts/sam2profiles $opt_12 $opt_r \
 				 -e -s -n \
 				 -d ${PROFILES} \
 				 -t ${name}"
 
-done
+    done
 ) | run_commands
 
 # ------------------------------------------------------------------------
