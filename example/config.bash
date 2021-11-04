@@ -1,9 +1,5 @@
 #! /bin/bash
 
-if [ -e /programs/docker/bin/docker1 ] ; then
-    export HOWTO_DOCKER_CMD=/programs/docker/bin/docker1
-fi
-
 REFERENCE_NAME=DC3000
 REFERENCE_GENOME=example/NC_004632.fna
 REFERENCE_ANNOTATION_GTF=example/NC_004632.gtf
@@ -45,6 +41,10 @@ if [ -e /programs/docker/bin/docker1 ] ; then
     export HOWTO_DOCKER_CMD=/programs/docker/bin/docker1
 fi
 
+if [ -e /programs/docker/bin/docker1 ] ; then
+    export HOWTO_DOCKER_CMD=/programs/docker/bin/docker1
+fi
+
 # Uncomment to get packages from HOWTO
 PACKAGES_FROM=howto
 
@@ -54,6 +54,3 @@ PACKAGES_FROM=howto
 
 # Override the default number of threads (nproc --all)
 #THREADS=32
-
-# fixme - document
-#RUN_FALCO_AFTER_FASTP=yes
