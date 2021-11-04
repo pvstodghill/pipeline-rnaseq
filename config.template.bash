@@ -37,7 +37,7 @@ SAMPLES_TREATMENT[5]=5255
 SAMPLES_R1[5]=$(ls ${ILLUMINA}/*_5255_3_*_R1.fastq.gz)
 SAMPLES_R2[5]=$(ls ${ILLUMINA}/*_5255_3_*_R2.fastq.gz)
 
-ADDITIONAL_BACTERIA_GENES=local/srna.gtf
+ADDITIONAL_GENES=local/srna.gtf
 
 # ------------------------------------------------------------------------
 

@@ -21,9 +21,9 @@ cp "${REFERENCE_GENOME}" ${INPUTS}/genome.fna
 echo 1>&2 '##' ${INPUTS}/annotation.gtf "<-" "${REFERENCE_ANNOTATION_GTF}"
 cp "${REFERENCE_ANNOTATION_GTF}" ${INPUTS}/annotation.gtf
 
-if [ "${ADDITIONAL_BACTERIA_GENES}" ] ; then
-    echo 1>&2 '##' ${INPUTS}/annotation.gtf "+<-" "${ADDITIONAL_BACTERIA_GENES}"
-    cat "${ADDITIONAL_BACTERIA_GENES}" >> ${INPUTS}/annotation.gtf
+if [ "${ADDITIONAL_GENES}" ] ; then
+    echo 1>&2 '##' ${INPUTS}/annotation.gtf "+<-" "${ADDITIONAL_GENES}"
+    cat "${ADDITIONAL_GENES}" >> ${INPUTS}/annotation.gtf
 fi
 
 echo 1>&2 '# Making copies of raw reads...'
