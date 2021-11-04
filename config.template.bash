@@ -4,6 +4,10 @@ if [ -e /programs/docker/bin/docker1 ] ; then
     export HOWTO_DOCKER_CMD=/programs/docker/bin/docker1
 fi
 
+if [ -e /programs/parallel/bin/parallel ] ; then
+    export PARALLEL_CMD=/programs/parallel/bin/parallel
+fi
+
 REFERENCE_NAME=DC3000
 REFERENCE_GENOME=local/DC3000_refseq.fna
 REFERENCE_ANNOTATION_GTF=local/DC3000_refseq.gtf

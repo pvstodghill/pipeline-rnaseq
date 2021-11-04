@@ -23,7 +23,7 @@ rm -rf ${FALCO1}
 	    echo falco -q -o ${FALCO1}/${SAMPLES_NAME[$i]}_R2 ${INPUTS}/raw_${i}_R2.fastq.gz
 	fi
     done
-) | run_parallel
+) | run_commands
 
 # ------------------------------------------------------------------------
 # Done.

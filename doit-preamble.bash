@@ -67,11 +67,13 @@ esac
 
 # ------------------------------------------------------------------------
 
-PARALLEL_PATH=$(type -p parallel)
+if [ -z "$PARALLEL_CMD" ] ; then
+    PARALLEL_CMD="$(type -p parallel)"
+fi
 
-function run_parallel {
-    if [ "$PARALLEL_PATH" ] ; then
-	eval $PARALLEL_PATH -j ${THREADS} -kv
+function run_commands {
+    if [ "$PARALLEL_CMD" ] ; then
+	eval $PARALLEL_CMD -j ${THREADS} -kv
     else
 	bash -x
     fi

@@ -25,7 +25,7 @@ if [ "$RUN_FALCO_AFTER_FASTP" ] ; then
 		echo falco -q -o ${FALCO2}/${SAMPLES_NAME[$i]}_R2 ${FASTP}/trimmed_${i}_R2.fastq.gz
 	    fi
 	done
-    ) | run_parallel
+    ) | run_commands
 
 fi
 
