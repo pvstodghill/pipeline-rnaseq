@@ -31,7 +31,7 @@ init_FEATURECOUNTS_ARGS
 FEATURECOUNTS_ARGS+=" -t gene"
 FEATURECOUNTS_ARGS+=" -g gene_biotype"
 #FEATURECOUNTS_ARGS+=" -f" # count at feature (exon) level, not the meta-feature (gene) level
-
+FEATURECOUNTS_ARGS+=" -T ${THREADS}"
 
 featureCounts $FEATURECOUNTS_ARGS \
     	      -a ${STATS}/annotation.gtf \
