@@ -101,19 +101,25 @@ function init_FEATURECOUNTS_ARGS {
     esac
 
     if [ "$PE" ] ; then
-	if ( conda run -n rnaseq featureCounts -h 2>&1 | fgrep -qs -e --countReadPairs ) ; then
-	    FEATURECOUNTS_ARGS+=" -p" # input data contains paired-end reads. (>=v2.0.2)
-	    FEATURECOUNTS_ARGS+=" --countReadPairs" # Count read pairs (fragments) instead of reads
-	else
-	    FEATURECOUNTS_ARGS+=" -p" # fragments (or pairs) will be counted instead of reads (<v2.0.2)
-	fi
+
+	V="$(featureCounts -v 2>&1 | egrep . | sed -e 's/.* v//')"
+	case x"$V"x in
+	    x2.0.2x|x2.0.3x)
+		FEATURECOUNTS_ARGS+=" -p" # input data contains paired-end reads. (>=v2.0.2)
+		FEATURECOUNTS_ARGS+=" --countReadPairs" # Count read pairs (fragments) instead of reads
+		;;
+	    x2.0.1x)
+		FEATURECOUNTS_ARGS+=" -p" # fragments (or pairs) will be counted instead of reads (<v2.0.2)
+		;;
+	    *)
+		echo 1>&2 Unknown featureCounts version: "$V"
+		exit 1
+	esac
 
 	FEATURECOUNTS_ARGS+=" -B" # Only count read pairs that have both ends aligned.
 	FEATURECOUNTS_ARGS+=" -P" # Check validity of paired-end distance
 	FEATURECOUNTS_ARGS+=" -C" # Only count concordant reads
     fi
-
-    FEATURECOUNTS_ARGS+=" -T ${THREADS}"
 
 }
 
