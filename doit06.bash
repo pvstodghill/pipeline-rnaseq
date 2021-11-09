@@ -27,15 +27,16 @@ fgrep $'\t'gene$'\t' ${INPUTS}/annotation.gtf \
     | ./scripts/sanitize-gtf-for-featureCounts \
 	  > ${COUNTS}/annotation.gtf
 
-for i in $SAMPLES_INDICES ; do
+(
+    for i in $SAMPLES_INDICES ; do
 
-    featureCounts $FEATURECOUNTS_ARGS \
-    		  -a ${COUNTS}/annotation.gtf \
-    		  -o ${COUNTS}/counts_$i.txt \
-    		  ${BOWTIE2}/aligned_$i.bam
+	echo featureCounts $FEATURECOUNTS_ARGS \
+    	     -a ${COUNTS}/annotation.gtf \
+    	     -o ${COUNTS}/counts_$i.txt \
+    	     ${BOWTIE2}/aligned_$i.bam
 
-done
-
+    done
+) | run_commands 
 
 # ------------------------------------------------------------------------
 # Done.
