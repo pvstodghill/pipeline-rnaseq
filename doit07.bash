@@ -53,11 +53,17 @@ Rscript ./scripts/run-deseq2 \
 # ------------------------------------------------------------------------
 
 cat ${DESEQ2}/temp/output-extended${TAG}.txt \
-    | ./scripts/deseq-output2results > ${DESEQ2}/results${TAG}.txt
+    | ./scripts/deseq-output2 -t \
+			      ${DESEQ2}/temp/regions.gtf \
+			      ${REFERENCE_ALIASES_TXT} \
+			      > ${DESEQ2}/results${TAG}.txt
 
 cat ${DESEQ2}/temp/output${TAG}.txt \
-    | ./scripts/deseq-output2gff ${ACCESSION} ${CHANGE_CUTOFF} \
-				 > ${DESEQ2}/results${TAG}_${CHANGE_CUTOFF}.gff
+    | ./scripts/deseq-output2 -g -c ${CHANGE_CUTOFF} \
+			      ${DESEQ2}/temp/regions.gtf \
+			      ${REFERENCE_ALIASES_TXT} \
+			      > ${DESEQ2}/results${TAG}_${CHANGE_CUTOFF}.gff
+
 set +e # if egrep matches nothing
 cat ${DESEQ2}/results${TAG}_${CHANGE_CUTOFF}.gff \
     | egrep '; colour [23];' > ${DESEQ2}/changed${TAG}_${CHANGE_CUTOFF}.gff
