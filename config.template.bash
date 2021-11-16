@@ -56,16 +56,13 @@ if [ -e /programs/docker/bin/docker1 ] ; then
     export HOWTO_DOCKER_CMD=/programs/docker/bin/docker1
 fi
 
-if [ -e /programs/docker/bin/docker1 ] ; then
-    export HOWTO_DOCKER_CMD=/programs/docker/bin/docker1
-fi
-
 # Uncomment to get packages from HOWTO
 PACKAGES_FROM=howto
 
 # uncomment to use conda
-# PACKAGES_FROM=conda
-# PACKAGES_ENV=rnaseq
+#PACKAGES_FROM=conda
+#CONDA_EXE=$(type -p conda)
+#CONDA_ENV=pipeline-trycycler
 
 # Override the default number of threads (nproc --all)
 #THREADS=32

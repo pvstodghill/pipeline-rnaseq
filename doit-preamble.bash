@@ -1,11 +1,10 @@
 #! /bin/bash
 
-HOWTO="./scripts/howto -q -T data/tmp -f packages.yaml"
-THREADS=$(nproc --all)
-
 export LC_ALL=C
 
 # ------------------------------------------------------------------------
+
+THREADS=$(nproc --all)
 
 . config.bash
 
@@ -43,7 +42,7 @@ case X"$PACKAGES_FROM"X in
     XcondaX)
 	CONDA_PREFIX=$(dirname $(dirname $CONDA_EXE))
 	. "${CONDA_PREFIX}/etc/profile.d/conda.sh"
-	conda activate $PACKAGES_ENV
+	conda activate $CONDA_ENV
 
 	;;
     XhowtoX|XstubsX)
