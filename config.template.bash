@@ -62,7 +62,7 @@ PACKAGES_FROM=howto
 # uncomment to use conda
 #PACKAGES_FROM=conda
 #CONDA_EXE=$(type -p conda)
-#CONDA_ENV=pipeline-trycycler
+#CONDA_ENV=pipeline-rnaseq
 
 # Override the default number of threads (nproc --all)
 #THREADS=32
