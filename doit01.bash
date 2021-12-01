@@ -2,15 +2,11 @@
 
 . doit-preamble.bash
 
-INPUTS=data/00_inputs
-
 # ------------------------------------------------------------------------
 # Step 1. FALCO, round 1
 # ------------------------------------------------------------------------
 
 echo 1>&2 '# Running FALCO on raw reads'
-
-FALCO1=data/01_falco
 
 rm -rf ${FALCO1}
 

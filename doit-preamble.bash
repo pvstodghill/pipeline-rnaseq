@@ -127,3 +127,15 @@ function init_FEATURECOUNTS_ARGS {
 set -e
 set -o pipefail
 
+# ------------------------------------------------------------------------
+
+BOWTIE2=data/04_bowtie2
+INPUTS=data/00_inputs
+FALCO1=data/01_falco
+FASTP=data/02_fastp
+FALCO2=data/03_falco
+
+COUNTS=data/06_counts
+DESEQ2=data/07_deseq2
+PROFILES=data/05_profiles
+STATS=data/08_stats

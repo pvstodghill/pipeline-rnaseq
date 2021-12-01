@@ -11,7 +11,6 @@ rm -rf data
 echo 1>&2 '# Initializing data/...'
 mkdir -p data/tmp
 
-INPUTS=data/00_inputs
 mkdir -p ${INPUTS}
 
 echo 1>&2 '# Making copies of reference genome...'

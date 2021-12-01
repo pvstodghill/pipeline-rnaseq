@@ -2,15 +2,11 @@
 
 . doit-preamble.bash
 
-INPUTS=data/00_inputs
-
 # ------------------------------------------------------------------------
 # Step 2. Run FASTP on Illumina reads
 # ------------------------------------------------------------------------
 
 echo 1>&2 '# Clean-up Illumina reads...'
-
-FASTP=data/02_fastp
 
 rm -rf ${FASTP}
 mkdir -p ${FASTP}

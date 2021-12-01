@@ -44,6 +44,7 @@ QC_GENES=local/qc.gtf
 # ------------------------------------------------------------------------
 
 # Arguments to FASTP
+#FASTP_ARGS=
 FASTP_ARGS="--trim_front1 1 --trim_front2 1 --adapter_sequence CTGTCTCTTATACACATCT"
 
 # Orientation of reads relative to original RNA molecules
