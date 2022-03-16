@@ -2,6 +2,14 @@
 
 Pipeline for analyzing _in-vitro_ RNA-Seq experiments.
 
+## Cloning the repo
+
+This pipeline using Git submodules. The easiest way to clone this repo (with a recent version of `git`) is
+
+```
+git clone --recurse-submodules https://github.com/pvstodghill/pipeline-rnaseq.git
+```
+
 ## Installing prereqs using [Conda](https://conda.io)
 
 ```
