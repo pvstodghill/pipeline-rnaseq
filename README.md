@@ -2,7 +2,7 @@
 
 Pipeline for analyzing _in-vitro_ RNA-Seq experiments.
 
-Setting a [Conda](https://conda.io) environment for the pipeline,
+## Installing prereqs using [Conda](https://conda.io)
 
 ```
 # conda env remove -y --name rnaseq
@@ -23,3 +23,13 @@ conda install -y bioconductor-deseq2
 conda install -y "samtools>=1.10"
 conda install -y subread
 ```
+## Configuring the pipeline
+
+1. Copy `config.template.bash` to `config.bash`
+2. Edit `config.bash` according to your needs and local environment.
+
+## Running the pipeline
+
+1. `./doit00.bash`
+2. `./doit01.bash`
+3. ...
