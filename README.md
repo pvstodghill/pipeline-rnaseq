@@ -10,6 +10,18 @@ This pipeline using Git submodules. The easiest way to clone this repo (with a r
 git clone --recurse-submodules https://github.com/pvstodghill/pipeline-rnaseq.git
 ```
 
+## Installing prereqs (not Conda)
+
+One of the following:
+
+- [Docker](https://www.docker.com/)
+- [Singularity](https://sylabs.io/)
+- [Apptainer](https://apptainer.org/)
+
+You will also need,
+
+- Perl's YAML module.
+
 ## Installing prereqs using [Conda](https://conda.io)
 
 ```
@@ -30,6 +42,7 @@ conda install -y bioconductor-deseq2
 # v-- https://github.com/bioconda/bioconda-recipes/issues/12100#issuecomment-911569353
 conda install -y "samtools>=1.10"
 conda install -y subread
+conda install -c bioconda perl-yaml
 ```
 ## Configuring the pipeline
 
