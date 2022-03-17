@@ -53,10 +53,6 @@ if [ -e /programs/docker/bin/docker1 ] ; then
     export HOWTO_DOCKER_CMD=/programs/docker/bin/docker1
 fi
 
-if [ -e /programs/docker/bin/docker1 ] ; then
-    export HOWTO_DOCKER_CMD=/programs/docker/bin/docker1
-fi
-
 # Uncomment to get packages from HOWTO
 PACKAGES_FROM=howto
 
