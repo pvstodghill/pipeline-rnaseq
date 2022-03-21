@@ -38,8 +38,20 @@ SAMPLES_TREATMENT[5]=5255
 SAMPLES_R1[5]=$(ls ${ILLUMINA}/*_5255_3_*_R1.fastq.gz)
 SAMPLES_R2[5]=$(ls ${ILLUMINA}/*_5255_3_*_R2.fastq.gz)
 
-ADDITIONAL_GENES=local/srna.gtf
-QC_GENES=local/qc.gtf
+
+# ADDITIONAL_GENES is used to add annotations to the base
+# annotation. These annotations are simply concatenated to the base
+# annotation.
+#ADDITIONAL_GENES=local/srna.gtf
+
+# QC_GENES is a hack to ensure that we have the correct sense (or
+# anti-sense) of the reads when we count the reads to genes. If you
+# look at the `example/NC_004632_qc.gtf` you will see two annotations,
+# both with the same coordinates but opposite strands. The number of
+# reads "hitting" each of these two annotations is included in the
+# final statistics. Presumably, there should be more reads hitting the
+# "sense" annotation than the "antisense" annotation.
+#QC_GENES=local/qc.gtf
 
 # ------------------------------------------------------------------------
 
