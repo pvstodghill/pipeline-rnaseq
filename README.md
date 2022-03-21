@@ -46,7 +46,13 @@ conda install -c bioconda perl-yaml
 ```
 ## Configuring the pipeline
 
-1. Copy `config.template.bash` to `config.bash`
+For the `example` data,
+
+1. Copy `example/config.bash` to  `config.bash`.
+
+To run the pipeline on your own data,
+
+1. Copy `config.template.bash` to `config.bash`.
 2. Edit `config.bash` according to your needs and local environment.
 
 ## Running the pipeline
