@@ -33,6 +33,8 @@ DATA=${DATA:-data}
 
 # ------------------------------------------------------------------------
 
+export HOWTO_TMPDIR=$(realpath ${DATA})/tmp
+
 if [ "$PACKAGES_FROM" = conda ] ; then
     if [ -z "$CONDA_EXE" ] ; then
 	CONDA_EXE=$(type -p conda)
@@ -47,7 +49,7 @@ case X"$PACKAGES_FROM"X in
 
 	;;
     XX|XhowtoX|XstubsX)
-	export PATH=$(dirname ${BASH_SOURCE[0]})/stubs:"$PATH"
+	export PATH=$(realpath $(dirname ${BASH_SOURCE[0]}))/stubs:"$PATH"
 	;;
     XnativeX)
 	: nothing
