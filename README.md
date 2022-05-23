@@ -10,41 +10,47 @@ This pipeline using Git submodules. The easiest way to clone this repo (with a r
 git clone --recurse-submodules https://github.com/pvstodghill/pipeline-rnaseq.git
 ```
 
-## Installing prereqs (not Conda)
+## Installing prereqs
 
 One of the following:
 
 - [Docker](https://www.docker.com/)
 - [Singularity](https://sylabs.io/)
 - [Apptainer](https://apptainer.org/)
+- [Conda](https://conda.io)
 
 You will also need,
 
-- Perl's YAML module.
+- [Perl](https://www.perl.org/)
+- [Perl's YAML module](https://metacpan.org/dist/YAML)
 
-## Installing prereqs using [Conda](https://conda.io)
-
-```
-# conda env remove -y --name rnaseq
-conda create -y --name rnaseq
-conda activate rnaseq
-
-# v-- https://www.biostars.org/p/455593/#479908
-# v-- https://www.biostars.org/p/455593/#9468633
-conda config --add channels bioconda
-conda config --add channels conda-forge
-
-conda install -y bowtie2
-# v-- for me 0.23.x hangs
-conda install -y fastp=0.22.0
-conda install -y falco
-conda install -y bioconductor-deseq2
-# v-- https://github.com/bioconda/bioconda-recipes/issues/12100#issuecomment-911569353
-conda install -y "samtools>=1.10"
-conda install -y subread
-conda install -c bioconda perl-yaml
-```
 ## Configuring the pipeline
+
+**Create the package manifest.**
+
+ Do one of the following,
+
+1. For strong reproducibility, use with Docker packages with explicit
+   versions
+
+```
+cp packages.docker.yaml packages.yaml
+```
+
+1. For convenience(?), flexibility(?), use the latest versions of
+   Conda packages.
+
+```
+cp packages.docker.yaml packages.yaml
+```
+
+1. Use whatever combination of package managers and versions you want.
+
+```
+$EDITOR packages.yaml
+```
+
+**Create the configuration files**
 
 For the `example` data,
 

@@ -35,19 +35,7 @@ DATA=${DATA:-data}
 
 export HOWTO_TMPDIR=$(realpath ${DATA})/tmp
 
-if [ "$PACKAGES_FROM" = conda ] ; then
-    if [ -z "$CONDA_EXE" ] ; then
-	CONDA_EXE=$(type -p conda)
-    fi
-fi
-
 case X"$PACKAGES_FROM"X in
-    XcondaX)
-	CONDA_PREFIX=$(dirname $(dirname $CONDA_EXE))
-	. "${CONDA_PREFIX}/etc/profile.d/conda.sh"
-	conda activate $CONDA_ENV
-
-	;;
     XX|XhowtoX|XstubsX)
 	export PATH=$(realpath $(dirname ${BASH_SOURCE[0]}))/stubs:"$PATH"
 	;;
