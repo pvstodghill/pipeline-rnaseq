@@ -10,9 +10,7 @@
     set -x
     bowtie2 --version | head -n1
     Rscript --version
-    Rscript \
-	-e 'suppressPackageStartupMessages(library("DESeq2"))' \
-	-e 'packageVersion("DESeq2")'
+    ${PIPELINE}/scripts/print-r-library-versions DESeq2
     falco --version
     fastp --version
     samtools --version | head -n1
