@@ -1,15 +1,13 @@
 #! /bin/bash
 
-. doit-preamble.bash
+. $(dirname ${BASH_SOURCE[0]})/doit-preamble.bash
 
 # ------------------------------------------------------------------------
 # Step 0. Set up
 # ------------------------------------------------------------------------
 
-rm -rf data
-
-echo 1>&2 '# Initializing data/...'
-mkdir -p data/tmp
+echo 1>&2 "# Initializing ${DATA}/..."
+mkdir -p ${DATA}/tmp
 
 mkdir -p ${INPUTS}
 
@@ -40,7 +38,7 @@ if [ "$PACKAGES_FROM" = howto ] ; then
     echo 1>&2 '# Ensuring entries in packages.yaml are downloaded...'
     (
 	set -x
-	./howto/howto -f packages.yaml -p '*'
+	${PIPELINE}/howto/howto -f ${PIPELINE}/packages.yaml -p '*'
     )
 fi
 

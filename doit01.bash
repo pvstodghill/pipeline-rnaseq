@@ -1,6 +1,6 @@
 #! /bin/bash
 
-. doit-preamble.bash
+. $(dirname ${BASH_SOURCE[0]})/doit-preamble.bash
 
 # ------------------------------------------------------------------------
 # Step 1. FALCO, round 1
@@ -19,7 +19,7 @@ rm -rf ${FALCO1}
 	    echo falco -q -o ${FALCO1}/${SAMPLES_NAME[$i]}_R2 ${INPUTS}/raw_${i}_R2.fastq.gz
 	fi
     done
-) | run_commands
+) | run_commands_from_stdin
 
 # ------------------------------------------------------------------------
 # Done.

@@ -1,19 +1,12 @@
 #! /bin/bash
 
-. doit-preamble.bash
-
-INPUTS=data/00_inputs
-PROFILES=data/05_profiles
-BOWTIE2=data/04_bowtie2
-COUNTS=data/06_counts
+. $(dirname ${BASH_SOURCE[0]})/doit-preamble.bash
 
 # ------------------------------------------------------------------------
 # Step 8. Compute some high-level stats
 # ------------------------------------------------------------------------
 
 echo 1>&2 '# Generating statistics...'
-
-STATS=data/08_stats
 
 rm -rf ${STATS}
 mkdir -p ${STATS}/temp

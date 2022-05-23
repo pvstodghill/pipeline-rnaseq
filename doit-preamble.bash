@@ -1,32 +1,5 @@
 #! /bin/bash
 
-export LC_ALL=C
-
-# ------------------------------------------------------------------------
-
-THREADS=$(nproc --all)
-
-. config.bash
-
-SAMPLES_INDICES=""
-for i in $(seq 0 9) ; do
-    if [ "${SAMPLES_R1[$i]}" ] ; then
-	SAMPLES_INDICES+=" $i"
-    fi
-done
-
-if [ "${SAMPLES_R2[0]}" ] ; then
-    PE=1
-fi
-
-# ------------------------------------------------------------------------
-
-if [ "$PACKAGES_FROM" = conda ] ; then
-    if [ -z "$CONDA_EXE" ] ; then
-	CONDA_EXE=$(type -p conda)
-    fi
-fi
-
 # In order to help test portability, I eliminate all of my
 # personalizations from the PATH, etc.
 if [ "$PVSE" ] ; then
@@ -38,6 +11,34 @@ if [ "$PVSE" ] ; then
     export PYTHONPATH=
 fi
 
+# ------------------------------------------------------------------------
+
+if [ -e /programs/docker/bin/docker1 ] ; then
+    THREADS=32
+else
+    THREADS=$(nproc --all)
+fi
+
+if [ -e /programs/parallel/bin/parallel ] ; then
+    PARALLEL_CMD=/programs/parallel/bin/parallel
+fi
+
+PIPELINE=$(dirname ${BASH_SOURCE[0]})
+# v-- can be specified externally
+DATA=${DATA:-data}
+
+# ------------------------------------------------------------------------
+
+. config.bash
+
+# ------------------------------------------------------------------------
+
+if [ "$PACKAGES_FROM" = conda ] ; then
+    if [ -z "$CONDA_EXE" ] ; then
+	CONDA_EXE=$(type -p conda)
+    fi
+fi
+
 case X"$PACKAGES_FROM"X in
     XcondaX)
 	CONDA_PREFIX=$(dirname $(dirname $CONDA_EXE))
@@ -45,7 +46,7 @@ case X"$PACKAGES_FROM"X in
 	conda activate $CONDA_ENV
 
 	;;
-    XhowtoX|XstubsX)
+    XX|XhowtoX|XstubsX)
 	export PATH=$(dirname ${BASH_SOURCE[0]})/stubs:"$PATH"
 	;;
     XnativeX)
@@ -70,13 +71,34 @@ if [ -z "$PARALLEL_CMD" ] ; then
     PARALLEL_CMD="$(type -p parallel)"
 fi
 
-function run_commands {
-    if [ "$PARALLEL_CMD" ] ; then
+# Usage: generate_commands_to_stdin | run_commands_from_stdin
+function run_commands_from_stdin {
+    if [ "$PARALLEL_CMD" -a "$THREADS" -gt 1 ] ; then
 	eval $PARALLEL_CMD -j ${THREADS} -kv
     else
 	bash -x
     fi
 }
+
+# ------------------------------------------------------------------------
+
+set -e
+set -o pipefail
+
+export LC_ALL=C
+
+# ------------------------------------------------------------------------
+
+SAMPLES_INDICES=""
+for i in $(seq 0 9) ; do
+    if [ "${SAMPLES_R1[$i]}" ] ; then
+	SAMPLES_INDICES+=" $i"
+    fi
+done
+
+if [ "${SAMPLES_R2[0]}" ] ; then
+    PE=1
+fi
 
 # ------------------------------------------------------------------------
 
@@ -124,18 +146,12 @@ function init_FEATURECOUNTS_ARGS {
 
 # ------------------------------------------------------------------------
 
-set -e
-set -o pipefail
-
-# ------------------------------------------------------------------------
-
-BOWTIE2=data/04_bowtie2
-INPUTS=data/00_inputs
-FALCO1=data/01_falco
-FASTP=data/02_fastp
-FALCO2=data/03_falco
-
-COUNTS=data/06_counts
-DESEQ2=data/07_deseq2
-PROFILES=data/05_profiles
-STATS=data/08_stats
+INPUTS=${DATA}/00_inputs
+FALCO1=${DATA}/01_falco
+FASTP=${DATA}/02_fastp
+FALCO2=${DATA}/03_falco
+BOWTIE2=${DATA}/04_bowtie2
+PROFILES=${DATA}/05_profiles
+COUNTS=${DATA}/06_counts
+DESEQ2=${DATA}/07_deseq2
+STATS=${DATA}/08_stats

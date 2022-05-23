@@ -1,16 +1,12 @@
 #! /bin/bash
 
-. doit-preamble.bash
-
-FASTP=data/02_fastp
+. $(dirname ${BASH_SOURCE[0]})/doit-preamble.bash
 
 # ------------------------------------------------------------------------
 # Step 3. FALCO, round 2
 # ------------------------------------------------------------------------
 
 echo 1>&2 '# Running FALCO on trimmed reads'
-
-FALCO2=data/03_falco
 
 rm -rf ${FALCO2}
 
@@ -23,7 +19,7 @@ rm -rf ${FALCO2}
 	    echo falco -q -o ${FALCO2}/${SAMPLES_NAME[$i]}_R2 ${FASTP}/trimmed_${i}_R2.fastq.gz
 	fi
     done
-) | run_commands
+) | run_commands_from_stdin
 
 
 # ------------------------------------------------------------------------

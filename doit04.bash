@@ -1,9 +1,6 @@
 #! /bin/bash
 
-. doit-preamble.bash
-
-INPUTS=data/00_inputs
-FASTP=data/02_fastp
+. $(dirname ${BASH_SOURCE[0]})/doit-preamble.bash
 
 # ------------------------------------------------------------------------
 # Step 4. Run Bowtie2
@@ -11,12 +8,11 @@ FASTP=data/02_fastp
 
 echo 1>&2 '# Indexing genome...'
 
-BOWTIE2=data/04_bowtie2
 rm -rf ${BOWTIE2}
 mkdir -p ${BOWTIE2}
 
 echo 1>&2 '##' ${BOWTIE2}/genome+phix.fna
-cat ${INPUTS}/genome.fna inputs/phix.fna > ${BOWTIE2}/genome+phix.fna
+cat ${INPUTS}/genome.fna ${PIPELINE}/inputs/phix.fna > ${BOWTIE2}/genome+phix.fna
 bowtie2-build -q --threads ${THREADS} \
 	 ${BOWTIE2}/genome+phix.fna \
 	 ${BOWTIE2}/genome+phix.fna

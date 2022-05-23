@@ -1,14 +1,10 @@
 #! /bin/bash
 
-. doit-preamble.bash
-
-BOWTIE2=data/04_bowtie2
+. $(dirname ${BASH_SOURCE[0]})/doit-preamble.bash
 
 # ------------------------------------------------------------------------
 # Step 5. Generating GFF files + Making profiles
 # ------------------------------------------------------------------------
-
-PROFILES=data/05_profiles
 
 rm -rf ${PROFILES}
 mkdir -p ${PROFILES}
@@ -33,13 +29,13 @@ esac
 	name=${SAMPLES_NAME[i]}
 
 	echo "samtools view -h ${BOWTIE2}/aligned_$i.bam \
-	| ./scripts/sam2profiles $opt_12 $opt_r \
+	| ${PIPELINE}/scripts/sam2profiles $opt_12 $opt_r \
 				 -e -s -n \
 				 -d ${PROFILES} \
 				 -t ${name}"
 
     done
-) | run_commands
+) | run_commands_from_stdin
 
 # ------------------------------------------------------------------------
 # Done.

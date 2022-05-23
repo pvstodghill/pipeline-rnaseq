@@ -1,8 +1,6 @@
 #! /bin/bash
 
-. doit-preamble.bash
-
-COUNTS=data/06_counts
+. $(dirname ${BASH_SOURCE[0]})/doit-preamble.bash
 
 # ------------------------------------------------------------------------
 # Step 7. Run DESeq2
@@ -13,14 +11,12 @@ echo 1>&2 '# Running DESeq2...'
 CHANGE_CUTOFF=2.0
 TAG=_${SAMPLES_TREATMENT[0]}-${SAMPLES_TREATMENT[3]}
 
-DESEQ2=data/07_deseq2
-
 rm -rf ${DESEQ2}
 mkdir -p ${DESEQ2}/temp
 
 cp ${COUNTS}/annotation.gtf ${DESEQ2}/temp/regions.gtf
 
-./scripts/make-counts-table-from-featurecounts \
+${PIPELINE}/scripts/make-counts-table-from-featurecounts \
     ${DESEQ2}/temp/regions.gtf \
     ${SAMPLES_NAME[0]}:${COUNTS}/counts_0.txt \
     ${SAMPLES_NAME[1]}:${COUNTS}/counts_1.txt \
@@ -32,7 +28,7 @@ cp ${COUNTS}/annotation.gtf ${DESEQ2}/temp/regions.gtf
 
 # ------------------------------------------------------------------------
 
-./scripts/prep-deseq2 -x -s ./scripts \
+${PIPELINE}/scripts/prep-deseq2 -x -s ${PIPELINE}/scripts \
 		      -F parametric \
 		      -d ${DESEQ2}/temp \
 		      -t ${TAG} \
@@ -47,19 +43,19 @@ cp ${COUNTS}/annotation.gtf ${DESEQ2}/temp/regions.gtf
 
 # ------------------------------------------------------------------------
 
-Rscript ./scripts/run-deseq2 \
+Rscript ${PIPELINE}/scripts/run-deseq2 \
 	${DESEQ2}/temp/params${TAG}.R
 
 # ------------------------------------------------------------------------
 
 cat ${DESEQ2}/temp/output-extended${TAG}.txt \
-    | ./scripts/deseq-output2 -t \
+    | ${PIPELINE}/scripts/deseq-output2 -t \
 			      ${DESEQ2}/temp/regions.gtf \
 			      ${REFERENCE_ALIASES_TXT} \
 			      > ${DESEQ2}/results${TAG}.txt
 
 cat ${DESEQ2}/temp/output${TAG}.txt \
-    | ./scripts/deseq-output2 -g -c ${CHANGE_CUTOFF} \
+    | ${PIPELINE}/scripts/deseq-output2 -g -c ${CHANGE_CUTOFF} \
 			      ${DESEQ2}/temp/regions.gtf \
 			      ${REFERENCE_ALIASES_TXT} \
 			      > ${DESEQ2}/results${TAG}_${CHANGE_CUTOFF}.gff

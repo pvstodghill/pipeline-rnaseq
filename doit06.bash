@@ -1,9 +1,6 @@
 #! /bin/bash
 
-. doit-preamble.bash
-
-INPUTS=data/00_inputs
-BOWTIE2=data/04_bowtie2
+. $(dirname ${BASH_SOURCE[0]})/doit-preamble.bash
 
 # ------------------------------------------------------------------------
 # Step 6. Make count tables
@@ -11,7 +8,6 @@ BOWTIE2=data/04_bowtie2
 
 echo 1>&2 '# Making count tables'
 
-COUNTS=data/06_counts
 rm -rf ${COUNTS}
 mkdir -p ${COUNTS}
 
@@ -24,7 +20,7 @@ FEATURECOUNTS_ARGS+=" -f" # count at feature level
 
 # FIXME: cp local/annotations.gtf ${COUNTS}/annotation.gtf
 fgrep $'\t'gene$'\t' ${INPUTS}/annotation.gtf \
-    | ./scripts/sanitize-gtf-for-featureCounts \
+    | ${PIPELINE}/scripts/sanitize-gtf-for-featureCounts \
 	  > ${COUNTS}/annotation.gtf
 
 (
@@ -36,7 +32,7 @@ fgrep $'\t'gene$'\t' ${INPUTS}/annotation.gtf \
     	     ${BOWTIE2}/aligned_$i.bam
 
     done
-) | run_commands 
+) | run_commands_from_stdin
 
 # ------------------------------------------------------------------------
 # Done.

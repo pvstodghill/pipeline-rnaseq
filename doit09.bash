@@ -1,10 +1,6 @@
 #! /bin/bash
 
-. doit-preamble.bash
-
-PROFILES=data/05_profiles
-DESEQ2=data/07_deseq2
-STATS=data/08_stats
+. $(dirname ${BASH_SOURCE[0]})/doit-preamble.bash
 
 # ------------------------------------------------------------------------
 # Package the results
@@ -21,11 +17,11 @@ cp ${DESEQ2}/results_*.txt  ${RESULTS}
 
 for f in ${DESEQ2}/*.gff ; do
     name=$(basename $f .gff)
-    cat $f | ./scripts/split-gff -n -d ${RESULTS} $name
+    cat $f | ${PIPELINE}/scripts/split-gff -n -d ${RESULTS} $name
 done
 
  cp ${STATS}/stats.txt ${RESULTS}/stats.txt
-# ./scripts/tsv2xlsx -o ${RESULTS}/stats.xlsx ${STATS}/stats.txt
+# ${PIPELINE}/scripts/tsv2xlsx -o ${RESULTS}/stats.xlsx ${STATS}/stats.txt
 
 # ------------------------------------------------------------------------
 # Done.
