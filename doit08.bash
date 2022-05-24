@@ -27,26 +27,21 @@ FEATURECOUNTS_ARGS+=" -g gene_biotype"
 FEATURECOUNTS_ARGS+=" -T ${THREADS}"
 
 # FIXME: parameterize
+ARGS=
+for i in $SAMPLES_INDICES ; do
+    ARGS+=" ${BOWTIE2}/aligned_${SAMPLES_NAME[$i]}.bam"
+done
+
 featureCounts $FEATURECOUNTS_ARGS \
     	      -a ${STATS}/annotation.gtf \
     	      -o ${STATS}/raw_counts.txt \
-    	      ${BOWTIE2}/aligned_${SAMPLES_NAME[0]}.bam \
-    	      ${BOWTIE2}/aligned_${SAMPLES_NAME[1]}.bam \
-    	      ${BOWTIE2}/aligned_${SAMPLES_NAME[2]}.bam \
-    	      ${BOWTIE2}/aligned_${SAMPLES_NAME[3]}.bam \
-    	      ${BOWTIE2}/aligned_${SAMPLES_NAME[4]}.bam \
-    	      ${BOWTIE2}/aligned_${SAMPLES_NAME[5]}.bam
-
+	      $ARGS
 
 (
-    # FIXME: parameterize
     echo -n gene_biotype
-    echo -n $'\t'${SAMPLES_NAME[0]}
-    echo -n $'\t'${SAMPLES_NAME[1]}
-    echo -n $'\t'${SAMPLES_NAME[2]}
-    echo -n $'\t'${SAMPLES_NAME[3]}
-    echo -n $'\t'${SAMPLES_NAME[4]}
-    echo -n $'\t'${SAMPLES_NAME[5]}
+    for i in $SAMPLES_INDICES ; do
+	echo -n $'\t'${SAMPLES_NAME[$i]}
+    done
     echo ''
     tail -n+3 ${STATS}/raw_counts.txt \
 	| cut -f 1,7-
