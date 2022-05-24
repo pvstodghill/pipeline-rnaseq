@@ -52,9 +52,5 @@ fi
 # Uncomment to get packages from HOWTO
 PACKAGES_FROM=howto
 
-# uncomment to use conda
-# PACKAGES_FROM=conda
-# PACKAGES_ENV=rnaseq
-
 # Override the default number of threads (nproc --all)
 #THREADS=32
