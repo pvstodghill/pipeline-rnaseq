@@ -1,6 +1,8 @@
-/.bash_history
-/.cache
-/.java
+.bash_history
+.cache
+.java
+/.htaccess
+/.jbrowse-ignore
 /20[0-9][0-9]-[0-9][0-9]-[0-9][0-9]-results.zip
 /20[0-9][0-9]-[0-9][0-9]-[0-9][0-9]-results/
 /config.bash
