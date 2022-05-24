@@ -1,4 +1,4 @@
-g#! /bin/bash
+#! /bin/bash
 
 . $(dirname ${BASH_SOURCE[0]})/doit-preamble.bash
 
