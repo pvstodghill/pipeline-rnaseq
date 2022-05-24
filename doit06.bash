@@ -28,8 +28,8 @@ fgrep $'\t'gene$'\t' ${INPUTS}/annotation.gtf \
 
 	echo featureCounts $FEATURECOUNTS_ARGS \
     	     -a ${COUNTS}/annotation.gtf \
-    	     -o ${COUNTS}/counts_$i.txt \
-    	     ${BOWTIE2}/aligned_$i.bam
+    	     -o ${COUNTS}/counts_${SAMPLES_NAME[$i]}.txt \
+    	     ${BOWTIE2}/aligned_${SAMPLES_NAME[$i]}.bam
 
     done
 ) | run_commands_from_stdin

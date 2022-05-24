@@ -16,18 +16,20 @@ mkdir -p ${DESEQ2}/temp
 
 cp ${COUNTS}/annotation.gtf ${DESEQ2}/temp/regions.gtf
 
+# FIXME: parameterize
 ${PIPELINE}/scripts/make-counts-table-from-featurecounts \
     ${DESEQ2}/temp/regions.gtf \
-    ${SAMPLES_NAME[0]}:${COUNTS}/counts_0.txt \
-    ${SAMPLES_NAME[1]}:${COUNTS}/counts_1.txt \
-    ${SAMPLES_NAME[2]}:${COUNTS}/counts_2.txt \
-    ${SAMPLES_NAME[3]}:${COUNTS}/counts_3.txt \
-    ${SAMPLES_NAME[4]}:${COUNTS}/counts_4.txt \
-    ${SAMPLES_NAME[5]}:${COUNTS}/counts_5.txt \
+    ${SAMPLES_NAME[0]}:${COUNTS}/counts_${SAMPLES_NAME[0]}.txt \
+    ${SAMPLES_NAME[1]}:${COUNTS}/counts_${SAMPLES_NAME[1]}.txt \
+    ${SAMPLES_NAME[2]}:${COUNTS}/counts_${SAMPLES_NAME[2]}.txt \
+    ${SAMPLES_NAME[3]}:${COUNTS}/counts_${SAMPLES_NAME[3]}.txt \
+    ${SAMPLES_NAME[4]}:${COUNTS}/counts_${SAMPLES_NAME[4]}.txt \
+    ${SAMPLES_NAME[5]}:${COUNTS}/counts_${SAMPLES_NAME[5]}.txt \
     > ${DESEQ2}/temp/counts.txt
 
 # ------------------------------------------------------------------------
 
+# FIXME: parameterize
 ${PIPELINE}/scripts/prep-deseq2 -x -s ${PIPELINE}/scripts \
 		      -F parametric \
 		      -d ${DESEQ2}/temp \

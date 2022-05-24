@@ -13,10 +13,10 @@ rm -rf ${FALCO2}
 (
     for i in $SAMPLES_INDICES ; do
 	mkdir -p ${FALCO2}/${SAMPLES_NAME[$i]}_R1
-	echo falco -q -o ${FALCO2}/${SAMPLES_NAME[$i]}_R1 ${FASTP}/trimmed_${i}_R1.fastq.gz
+	echo falco -q -o ${FALCO2}/${SAMPLES_NAME[$i]}_R1 ${FASTP}/trimmed_${SAMPLES_NAME[$i]}_R1.fastq.gz
 	if [ "$PE" ] ; then
 	    mkdir -p ${FALCO2}/${SAMPLES_NAME[$i]}_R2
-	    echo falco -q -o ${FALCO2}/${SAMPLES_NAME[$i]}_R2 ${FASTP}/trimmed_${i}_R2.fastq.gz
+	    echo falco -q -o ${FALCO2}/${SAMPLES_NAME[$i]}_R2 ${FASTP}/trimmed_${SAMPLES_NAME[$i]}_R2.fastq.gz
 	fi
     done
 ) | run_commands_from_stdin

@@ -26,18 +26,20 @@ FEATURECOUNTS_ARGS+=" -g gene_biotype"
 #FEATURECOUNTS_ARGS+=" -f" # count at feature (exon) level, not the meta-feature (gene) level
 FEATURECOUNTS_ARGS+=" -T ${THREADS}"
 
+# FIXME: parameterize
 featureCounts $FEATURECOUNTS_ARGS \
     	      -a ${STATS}/annotation.gtf \
     	      -o ${STATS}/raw_counts.txt \
-    	      ${BOWTIE2}/aligned_0.bam \
-    	      ${BOWTIE2}/aligned_1.bam \
-    	      ${BOWTIE2}/aligned_2.bam \
-    	      ${BOWTIE2}/aligned_3.bam \
-    	      ${BOWTIE2}/aligned_4.bam \
-    	      ${BOWTIE2}/aligned_5.bam
+    	      ${BOWTIE2}/aligned_${SAMPLES_NAME[0]}.bam \
+    	      ${BOWTIE2}/aligned_${SAMPLES_NAME[1]}.bam \
+    	      ${BOWTIE2}/aligned_${SAMPLES_NAME[2]}.bam \
+    	      ${BOWTIE2}/aligned_${SAMPLES_NAME[3]}.bam \
+    	      ${BOWTIE2}/aligned_${SAMPLES_NAME[4]}.bam \
+    	      ${BOWTIE2}/aligned_${SAMPLES_NAME[5]}.bam
 
 
 (
+    # FIXME: parameterize
     echo -n gene_biotype
     echo -n $'\t'${SAMPLES_NAME[0]}
     echo -n $'\t'${SAMPLES_NAME[1]}

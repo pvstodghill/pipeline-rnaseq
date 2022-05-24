@@ -28,7 +28,7 @@ esac
 
 	name=${SAMPLES_NAME[i]}
 
-	echo "samtools view -h ${BOWTIE2}/aligned_$i.bam \
+	echo "samtools view -h ${BOWTIE2}/aligned_${SAMPLES_NAME[$i]}.bam \
 	| ${PIPELINE}/scripts/sam2profiles $opt_12 $opt_r \
 				 -e -s -n \
 				 -d ${PROFILES} \
