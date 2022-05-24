@@ -59,9 +59,10 @@ SAMPLES_R2[5]=$(ls ${ILLUMINA}/*_5255_3_*_R2.fastq.gz)
 #FASTP_ARGS=
 FASTP_ARGS="--trim_front1 1 --trim_front2 1 --adapter_sequence CTGTCTCTTATACACATCT"
 
-# Orientation of reads relative to original RNA molecules
+# Orientation of reads relative to original RNA molecules. Set this
+# only if the pipeline does not correctly detect the orientation.
 #ORIENTATION=forward
-ORIENTATION=reverse
+#ORIENTATION=reverse
 
 # ------------------------------------------------------------------------
 
