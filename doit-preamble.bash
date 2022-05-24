@@ -141,7 +141,8 @@ FALCO1=${DATA}/01_falco
 FASTP=${DATA}/02_fastp
 FALCO2=${DATA}/03_falco
 BOWTIE2=${DATA}/04_bowtie2
-PROFILES=${DATA}/05_profiles
-COUNTS=${DATA}/06_counts
-DESEQ2=${DATA}/07_deseq2
-STATS=${DATA}/08_stats
+
+PROFILES=${DATA}/06_profiles
+COUNTS=${DATA}/07_counts
+DESEQ2=${DATA}/08_deseq2
+STATS=${DATA}/09_stats

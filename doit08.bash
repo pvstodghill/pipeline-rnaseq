@@ -120,8 +120,8 @@ function run_deseq2
 # Run the user-specified analyses
 # ------------------------------------------------------------------------
 
-if [ -f config07.bash ] ; then
-    . config07.bash
+if [ -f config08.bash ] ; then
+    . config08.bash
 else
     ARGS=
     for i in $SAMPLES_INDICES ; do

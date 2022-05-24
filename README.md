@@ -55,13 +55,13 @@ $EDITOR packages.yaml
 For the `example` data,
 
 1. Copy `example/config.bash` to  `config.bash`.
-2. Optionally, copy `example/config07.bash` to  `config07.bash`.
+2. Optionally, copy `example/config08.bash` to  `config08.bash`.
 
 To run the pipeline on your own data,
 
 1. Copy `config.template.bash` to `config.bash`.  Edit `config.bash`
    according to your needs and local environment.
-2. Optionally,  `config07.template.bash` to `config07.bash` and edit.
+2. Optionally,  `config08.template.bash` to `config08.bash` and edit.
 
 ## Running the pipeline
 
