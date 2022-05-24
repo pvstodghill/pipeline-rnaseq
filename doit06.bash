@@ -3,7 +3,7 @@
 . $(dirname ${BASH_SOURCE[0]})/doit-preamble.bash
 
 # ------------------------------------------------------------------------
-# Step 5. Generating GFF files + Making profiles
+# Step 6. Generating GFF files + Making profiles
 # ------------------------------------------------------------------------
 
 rm -rf ${PROFILES}

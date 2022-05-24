@@ -3,7 +3,7 @@
 . $(dirname ${BASH_SOURCE[0]})/doit-preamble.bash
 
 # ------------------------------------------------------------------------
-# Step 8. Compute some high-level stats
+# Step 9. Compute some high-level stats
 # ------------------------------------------------------------------------
 
 echo 1>&2 '# Generating statistics...'

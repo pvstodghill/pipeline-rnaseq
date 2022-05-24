@@ -3,7 +3,7 @@
 . $(dirname ${BASH_SOURCE[0]})/doit-preamble.bash
 
 # ------------------------------------------------------------------------
-# Step 6. Make count tables
+# Step 7. Make count tables
 # ------------------------------------------------------------------------
 
 echo 1>&2 '# Making count tables'

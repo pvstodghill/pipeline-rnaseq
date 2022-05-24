@@ -3,7 +3,7 @@
 . $(dirname ${BASH_SOURCE[0]})/doit-preamble.bash
 
 # ------------------------------------------------------------------------
-# Package the results
+# Step 10. Package the results
 # ------------------------------------------------------------------------
 
 RESULTS=$(date +%Y-%m-%d)-results
