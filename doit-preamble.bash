@@ -101,16 +101,6 @@ function init_FEATURECOUNTS_ARGS {
     ##FEATURECOUNTS_ARGS+=" --fraction" # Assign fractional counts to features
     #FEATURECOUNTS_ARGS+=" --primary" # Count primary alignments only !(0x100)
 
-    case X"$ORIENTATION"X in
-	XforwardX)
-	    FEATURECOUNTS_ARGS+=" -s 1" # stranded
-	    ;;
-	XreverseX)
-	    FEATURECOUNTS_ARGS+=" -s 2" # reverse-stranded
-	    ;;
-	X*X) echo 1>&2 cannot happen ; exit 1
-    esac
-
     if [ "$PE" ] ; then
 
 	V="$(featureCounts -v 2>&1 | egrep . | sed -e 's/.* v//')"
@@ -141,7 +131,7 @@ FALCO1=${DATA}/01_falco
 FASTP=${DATA}/02_fastp
 FALCO2=${DATA}/03_falco
 BOWTIE2=${DATA}/04_bowtie2
-
+STRAND=${DATA}/05_strand
 PROFILES=${DATA}/06_profiles
 COUNTS=${DATA}/07_counts
 DESEQ2=${DATA}/08_deseq2

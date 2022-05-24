@@ -17,6 +17,9 @@ else
     opt_12=-1
 fi
 
+if [ -z "$ORIENTATION" ] ; then
+    . ${STRAND}/results.sh
+fi
 case X"$ORIENTATION"X in
     XforwardX) opt_r= ;;
     XreverseX) opt_r=-r ;;
