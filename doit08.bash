@@ -18,7 +18,7 @@ cp ${COUNTS}/annotation.gtf ${DESEQ2}/temp/regions.gtf
 # ------------------------------------------------------------------------
 
 deseq2_opt_c=2.0 # fold-change "cutoff"
-deseq2_opt_f=0.5 # q-value (fdr) cutoff
+deseq2_opt_f=0.05 # q-value (fdr) cutoff
 deseq2_opt_p=-1  # p-value cutoff
 
 run_deseq2__usage=
@@ -88,7 +88,7 @@ function run_deseq2
 
     ${PIPELINE}/scripts/prep-deseq2 -x -s ${PIPELINE}/scripts \
 	       -F parametric \
-	       -f $deseq2_opt_f -p $deseq2_opt_p \
+	       -f $opt_f -p $opt_p \
 	       -d ${DESEQ2}/temp \
 	       -t _${opt_t} \
 	       -c ${DESEQ2}/temp/counts_${opt_t}.txt \
@@ -104,7 +104,7 @@ function run_deseq2
 		     > ${DESEQ2}/results_${opt_t}.txt
 
     cat ${DESEQ2}/temp/output_${opt_t}.txt \
-	| ${PIPELINE}/scripts/deseq-output2 -g -c $deseq2_opt_c \
+	| ${PIPELINE}/scripts/deseq-output2 -g -c $opt_c \
 		     ${DESEQ2}/temp/regions.gtf \
 		     ${REFERENCE_ALIASES_TXT} \
 		     > ${DESEQ2}/results_${opt_t}.gff
