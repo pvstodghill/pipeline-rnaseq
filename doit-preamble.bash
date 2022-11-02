@@ -33,13 +33,6 @@ fi
 
 # ------------------------------------------------------------------------
 
-# Uncomment to get packages from HOWTO
-PACKAGES_FROM=howto
-
-# Override the default number of threads (nproc --all)
-#THREADS=32
-
-
 # These vars are used in parameters to stubs/*, so they cannot be
 # `realpath`'ed.
 PIPELINE=$(dirname ${BASH_SOURCE[0]})
