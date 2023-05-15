@@ -1,7 +1,16 @@
+# https://bioconductor.org/packages/DESeq2/
+# https://anaconda.org/bioconda/bioconductor-deseq2
+---
+image: pvstodghill/bioconductor-deseq2
+version: 1.38.0__2023-05-15
+commands:
+  - Rscript
+
 # https://github.com/BenLangmead/bowtie2
+# https://bioconda.github.io/recipes/bowtie2/README.html
 ---
 image: pvstodghill/bowtie2
-version: 2.4.5__2022-01-31
+version: 2.5.1__2023-05-08
 commands:
   - bowtie2
   - bowtie2-align-l
@@ -13,21 +22,16 @@ commands:
   - bowtie2-inspect-l
   - bowtie2-inspect-s
 
-# https://bioconductor.org/packages/DESeq2/
----
-image: pvstodghill/deseq2
-version: 1.36.0__2022-05-23
-commands:
-  - Rscript
-
 # https://github.com/smithlabcode/falco
+# https://bioconda.github.io/recipes/falco/README.html
 ---
 image: pvstodghill/falco
-version: 0.3.0__2021-11-03
+version: 1.2.1__2023-05-15
 commands:
   - falco
 
 # https://github.com/OpenGene/fastp
+# https://bioconda.github.io/recipes/fastp/README.html
 ---
 image: pvstodghill/fastp
 version: 0.23.2__2021-12-06
@@ -35,9 +39,10 @@ commands:
   - fastp
   
 # https://github.com/samtools/samtools
+# https://bioconda.github.io/recipes/samtools/README.html
 ---
 image: pvstodghill/samtools
-version: 1.15.1__2022-05-02
+version: 1.17__2023-05-09
 commands:
   - ace2sam
   - bcftools
@@ -71,6 +76,7 @@ commands:
   - zoom2sam.pl
 
 # http://subread.sourceforge.net/
+# https://bioconda.github.io/recipes/subread/README.html
 ---
 image: pvstodghill/subread
 version: 2.0.3__2021-10-08
