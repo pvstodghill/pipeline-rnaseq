@@ -24,7 +24,11 @@ init_FEATURECOUNTS_ARGS
 FEATURECOUNTS_ARGS+=" -t gene"
 FEATURECOUNTS_ARGS+=" -g gene_biotype"
 #FEATURECOUNTS_ARGS+=" -f" # count at feature (exon) level, not the meta-feature (gene) level
-FEATURECOUNTS_ARGS+=" -T ${THREADS}"
+if [ "${THREADS}" -gt 64 ] ; then
+    FEATURECOUNTS_ARGS+=" -T 64"
+else
+    FEATURECOUNTS_ARGS+=" -T ${THREADS}"
+fi
 
 # FIXME: parameterize
 ARGS=
