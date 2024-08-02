@@ -23,9 +23,9 @@ fi
 
 set -x
 
-conda env remove -y --name pipeline-smith2021
-conda create -y --name pipeline-smith2021
-conda activate pipeline-smith2021
+conda env remove -y --name pipeline-rnaseq
+conda create -y --name pipeline-rnaseq
+conda activate pipeline-rnaseq
 
 $_conda install -y ${PACKAGES}
 
