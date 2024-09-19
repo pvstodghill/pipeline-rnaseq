@@ -2,25 +2,25 @@ DATA := data
 
 THREADS := $(shell nproc)
 
-GENOME_FNA := example/NC_004632.fna
-GENOME_GTF := example/NC_004632.gtf
+GENOME_FNA := ${PIPELINE}/example/NC_004632.fna
+GENOME_GTF := ${PIPELINE}/example/NC_004632.gtf
 
 ADDITIONAL_GTF:=
 
 SAMPLE_NAMES := WT1 WT2 WT3 52551 52552 52553
 
-R1_WT1 := example/WT1_R1.fastq.gz
-R2_WT1 := example/WT1_R2.fastq.gz
-R1_WT2 := example/WT2_R1.fastq.gz
-R2_WT2 := example/WT2_R2.fastq.gz
-R1_WT3 := example/WT3_R1.fastq.gz
-R2_WT3 := example/WT3_R2.fastq.gz
-R1_52551 := example/52551_R1.fastq.gz
-R2_52551 := example/52551_R2.fastq.gz
-R1_52552 := example/52552_R1.fastq.gz
-R2_52552 := example/52552_R2.fastq.gz
-R1_52553 := example/52553_R1.fastq.gz
-R2_52553 := example/52553_R2.fastq.gz
+R1_WT1 := ${PIPELINE}/example/WT1_R1.fastq.gz
+R2_WT1 := ${PIPELINE}/example/WT1_R2.fastq.gz
+R1_WT2 := ${PIPELINE}/example/WT2_R1.fastq.gz
+R2_WT2 := ${PIPELINE}/example/WT2_R2.fastq.gz
+R1_WT3 := ${PIPELINE}/example/WT3_R1.fastq.gz
+R2_WT3 := ${PIPELINE}/example/WT3_R2.fastq.gz
+R1_52551 := ${PIPELINE}/example/52551_R1.fastq.gz
+R2_52551 := ${PIPELINE}/example/52551_R2.fastq.gz
+R1_52552 := ${PIPELINE}/example/52552_R1.fastq.gz
+R2_52552 := ${PIPELINE}/example/52552_R2.fastq.gz
+R1_52553 := ${PIPELINE}/example/52553_R1.fastq.gz
+R2_52553 := ${PIPELINE}/example/52553_R2.fastq.gz
 
 FASTP_ARGS := --trim_front1 1 --trim_front2 1 --adapter_sequence CTGTCTCTTATACACATCT
 
