@@ -1,4 +1,4 @@
-PIPELINE := $(realpath $(dir $(firstword $(MAKEFILE_LIST))))
+PIPELINE := $(realpath $(dir $(lastword $(MAKEFILE_LIST))))
 
 export PATH := $(PIPELINE)/howto:${PATH}
 export PATH := $(PIPELINE)/stubs:${PATH}
@@ -13,17 +13,19 @@ include config.mk
 # Grab input files
 ########################################################################
 
-# all:: ${DATA}/inputs/genome.fna
+.PHONY:: get_inputs
+
+get_inputs:: ${DATA}/inputs/genome.fna
 ${DATA}/inputs/genome.fna : ${GENOME_FNA}
 	@mkdir -p $$(dirname $@)
 	cp -a $< $@
 
-# all:: ${DATA}/inputs/genome.gtf
+get_inputs:: ${DATA}/inputs/genome.gtf
 ${DATA}/inputs/genome.gtf : ${GENOME_GTF}
 	@mkdir -p $$(dirname $@)
 	cp -a $< $@
 
-# all:: ${DATA}/inputs/additional.gtf
+get_inputs:: ${DATA}/inputs/additional.gtf
 ifneq (${ADDITIONAL_GTF},)
 ${DATA}/inputs/additional.gtf : ${ADDITIONAL_GTF}
 	@mkdir -p $$(dirname $@)
@@ -35,9 +37,9 @@ ${DATA}/inputs/additional.gtf :
 endif
 
 
-# all:: $(foreach NAME, $(SAMPLE_NAMES),\
-#	   $(foreach Rx, R1 R2,\
-#		${DATA}/inputs/${NAME}_${Rx}.fastq.gz))
+get_inputs:: $(foreach NAME, $(SAMPLE_NAMES),\
+		   $(foreach Rx, R1 R2,\
+			${DATA}/inputs/${NAME}_${Rx}.fastq.gz))
 
 define rule_copy_fq
 ${DATA}/inputs/$(1)_$(2).fastq.gz : ${$(2)_$(1)}
@@ -54,11 +56,11 @@ $(foreach NAME, $(SAMPLE_NAMES),\
 # Falco
 ########################################################################
 
-.PHONY:: falco
-all:: falco
-falco: $(foreach NAME, $(SAMPLE_NAMES),\
-	   $(foreach Rx, R1 R2,\
-		${DATA}/falco/${NAME}_${Rx}/summary.txt))
+.PHONY:: run_falco
+all:: run_falco
+run_falco: $(foreach NAME, $(SAMPLE_NAMES),\
+		$(foreach Rx, R1 R2,\
+		    ${DATA}/falco/${NAME}_${Rx}/summary.txt))
 
 define rule_run_falco
 ${DATA}/falco/$(1)_$(2)/summary.txt : ${DATA}/inputs/$(1)_$(2).fastq.gz
@@ -75,9 +77,11 @@ $(foreach NAME, $(SAMPLE_NAMES),\
 # Fastp
 ########################################################################
 
-# all:: $(foreach NAME, $(SAMPLE_NAMES),\
-#	   $(foreach Rx, R1 R2,\
-#		${DATA}/fastp/${NAME}_${Rx}.fastq.gz))
+.PHONY:: run_fastp
+
+run_fastp :: $(foreach NAME, $(SAMPLE_NAMES),\
+		  $(foreach Rx, R1 R2,\
+		       ${DATA}/fastp/${NAME}_${Rx}.fastq.gz))
 
 FASTP_THREADS = $(shell if [ ${THREADS} -gt 16 ] ; then echo 16 ; else echo ${THREADS} ; fi)
 
@@ -106,13 +110,16 @@ $(foreach NAME, $(SAMPLE_NAMES),\
 # Bowtie2
 ########################################################################
 
-# all:: ${DATA}/bowtie2/genome+phix.fna
+.PHONY:: run_bowtie2
+
+run_bowtie2:: ${DATA}/bowtie2/genome+phix.fna
+
 ${DATA}/bowtie2/genome+phix.fna : ${DATA}/inputs/genome.fna ${PIPELINE}/inputs/phix.fna
 	@mkdir -p $(dir $@)
 	cat $^ > $@
 	bowtie2-build -q --threads ${THREADS} $@ $@
 
-# all:: $(foreach NAME, $(SAMPLE_NAMES), ${DATA}/bowtie2/${NAME}.bam)
+run_bowtie2:: $(foreach NAME, $(SAMPLE_NAMES), ${DATA}/bowtie2/${NAME}.bam)
 
 define rule_run_bowtie2
 ${DATA}/bowtie2/$(1).bam : \
@@ -137,7 +144,8 @@ $(foreach NAME, $(SAMPLE_NAMES),\
 # Strandedness test
 ########################################################################
 
-# all:: ${DATA}/strand/targets.gtf
+.PHONY:: run_strand_test
+
 ${DATA}/strand/targets.gtf : ${DATA}/inputs/genome.gtf # ${DATA}/inputs/additional.gtf
 	@mkdir -p $$(dirname $@)
 	cat $^ \
@@ -167,7 +175,7 @@ ${DATA}/strand/reverse.txt : ${DATA}/strand/targets.gtf ${DATA}/bowtie2/${A_SAMP
 	    -o $@ \
 	    ${DATA}/bowtie2/${A_SAMPLE_NAME}.bam
 
-# all:: ${DATA}/strand/results.sh
+run_strand_test :: ${DATA}/strand/results.sh
 
 ifneq (${ORIENTATION},)
 
@@ -187,10 +195,10 @@ endif
 # Make profiles
 ########################################################################
 
-.PHONY:: profiles
-all:: profiles
+.PHONY:: make_profiles
+all:: make_profiles
 
-profiles:: $(foreach NAME, $(SAMPLE_NAMES), ${DATA}/profiles/.done.${NAME})
+make_profiles:: $(foreach NAME, $(SAMPLE_NAMES), ${DATA}/profiles/.done.${NAME})
 
 define rule_make_profiles
 ${DATA}/profiles/.done.$(1) : \
@@ -220,7 +228,8 @@ $(foreach NAME, $(SAMPLE_NAMES),\
 # Make count table
 ########################################################################
 
-# all:: ${DATA}/strand/targets.gtf
+.PHONY:: make_counts
+
 ${DATA}/counts/annotations.gtf : ${DATA}/inputs/genome.gtf ${DATA}/inputs/additional.gtf
 	@mkdir -p $$(dirname $@)
 	cat $^ \
@@ -228,10 +237,7 @@ ${DATA}/counts/annotations.gtf : ${DATA}/inputs/genome.gtf ${DATA}/inputs/additi
 	    | perl ${PIPELINE}/scripts/sanitize-gtf-for-featureCounts \
 	       > $@
 
-.PHONY:: counts
-all:: counts
-
-counts:: $(foreach NAME, $(SAMPLE_NAMES), ${DATA}/counts/counts_${NAME}.txt)
+make_counts:: $(foreach NAME, $(SAMPLE_NAMES), ${DATA}/counts/counts_${NAME}.txt)
 
 define rule_make_counts
 ${DATA}/counts/counts_$(1).txt : ${DATA}/bowtie2/$(1).bam \
@@ -261,13 +267,16 @@ $(foreach NAME, $(SAMPLE_NAMES),\
 # Run DESeq2
 #########################################################################
 
+.PHONY:: run_deseq2
+all:: run_deseq2
+
 ${DATA}/deseq2/temp/regions.gtf: ${DATA}/counts/annotations.gtf
 	@mkdir -p $$(dirname $@)
 	cp $^ $@
 
-all:: $(foreach TAG, ${EXP_NAMES}, ${DATA}/deseq2/results_${TAG}.txt)
-all:: $(foreach TAG, ${EXP_NAMES}, ${DATA}/deseq2/results_${TAG}.gff)
-all:: $(foreach TAG, ${EXP_NAMES}, ${DATA}/deseq2/changed_${TAG}.gff)
+run_deseq2:: $(foreach TAG, ${EXP_NAMES}, ${DATA}/deseq2/results_${TAG}.txt)
+run_deseq2:: $(foreach TAG, ${EXP_NAMES}, ${DATA}/deseq2/results_${TAG}.gff)
+run_deseq2:: $(foreach TAG, ${EXP_NAMES}, ${DATA}/deseq2/changed_${TAG}.gff)
 
 
 define rule_run_deseq2
