@@ -1,0 +1,69 @@
+########################################################################
+# Basic parameters
+########################################################################
+
+# # Where to put output files
+# data: data
+
+# The genome
+genome:
+  fna: 'fixme/genome.fna'
+  gtf: 'fixme/genome.gtf'
+  # Any additional annotations
+  #additional_gtf: 
+
+########################################################################
+# Sample data
+########################################################################
+
+samples:
+
+  A1:
+    R1: 'fixme/A1_R1.fastq.gz'
+    R2: 'fixme/A1_R2.fastq.gz'
+  A2:
+    R1: 'fixme/A2_R1.fastq.gz'
+    R2: 'fixme/A2_R2.fastq.gz'
+  A3:
+    R1: 'fixme/A3_R1.fastq.gz'
+    R2: 'fixme/A3_R2.fastq.gz'
+  B1:
+    R1: 'fixme/B1_R1.fastq.gz'
+    R2: 'fixme/B1_R2.fastq.gz'
+  B2:
+    R1: 'fixme/B2_R1.fastq.gz'
+    R2: 'fixme/B2_R2.fastq.gz'
+  B3:
+    R1: 'fixme/B3_R1.fastq.gz'
+    R2: 'fixme/B3_R2.fastq.gz'
+
+# fastp_args: "--trim_front1 1 --trim_front2 1 --adapter_sequence CTGTCTCTTATACACATCT"
+
+# How do the reads map to the genome?
+# orientation := "forward" # reads map to "sense"
+# orientation := "reverse" # reads map to "antisense"
+# If "orientation" is not set, then deduce heuristically
+
+########################################################################
+# Diff exp parameters
+########################################################################
+
+exps:
+
+  example:
+    fdr: 0.05
+    #pvalue: 0.05
+    foldchange: 2.0
+    control_name: 'A'
+    control_samples: ['A1', 'A2', 'A3']
+    treatment_name: 'B'
+    treatment_samples: ['B1', 'B2', 'B3']
+
+  unfiltered:
+    fdr: -1
+    pvalue: -1
+    foldchange: 1,5
+    control_name: 'A'
+    control_samples: ['A1', 'A2', 'A3']
+    treatment_name: 'B'
+    treatment_samples: ['B1', 'B2', 'B3']

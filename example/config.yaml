@@ -1,0 +1,68 @@
+########################################################################
+# Basic parameters
+########################################################################
+
+# Where to put output files
+data: data
+
+# # The genome
+genome:
+  fna: 'example/NC_004632.fna'
+  gtf: 'example/NC_004632.gtf'
+  # Any additional annotations
+  #additional_gtf: 
+
+########################################################################
+# Sample data
+########################################################################
+
+samples:
+  WT1:
+    R1: 'example/WT1_R1.fastq.gz'
+    R2: 'example/WT1_R2.fastq.gz'
+  WT2:
+    R1: 'example/WT2_R1.fastq.gz'
+    R2: 'example/WT2_R2.fastq.gz'
+  WT3:
+    R1: 'example/WT3_R1.fastq.gz'
+    R2: 'example/WT3_R2.fastq.gz'
+  Delta52551:
+    R1: 'example/52551_R1.fastq.gz'
+    R2: 'example/52551_R2.fastq.gz'
+  Delta52552:
+    R1: 'example/52552_R1.fastq.gz'
+    R2: 'example/52552_R2.fastq.gz'
+  Delta52553:
+    R1: 'example/52553_R1.fastq.gz'
+    R2: 'example/52553_R2.fastq.gz'
+
+fastp_args: "--trim_front1 1 --trim_front2 1 --adapter_sequence CTGTCTCTTATACACATCT"
+
+# How do the reads map to the genome?
+# orientation := "forward" # reads map to "sense"
+# orientation := "reverse" # reads map to "antisense"
+# If "orientation" is not set, then deduce heuristically
+
+########################################################################
+# Diff exp parameters
+########################################################################
+
+exps:
+
+  example:
+    fdr: 0.05
+    #pvalue: 0.05
+    foldchange: 2.0
+    control_name: 'WT'
+    control_samples: ['WT1', 'WT2', 'WT3']
+    treatment_name: 'Delta5255'
+    treatment_samples: ['Delta52551', 'Delta52552', 'Delta52553']
+
+  unfiltered:
+    fdr: -1
+    pvalue: -1
+    foldchange: 1,5
+    control_name: 'WT'
+    control_samples: ['WT1', 'WT2', 'WT3']
+    treatment_name: 'Delta5255'
+    treatment_samples: ['Delta52551', 'Delta52552', 'Delta52553']

@@ -1,7 +1,8 @@
 .bash_history
+.snakemake
 .cache
 .java
 /.htaccess
 /.jbrowse-ignore
-/config.mk
+/config.yaml
 /data/
