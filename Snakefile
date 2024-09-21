@@ -52,21 +52,46 @@ rule make_inputs:
         DATA+"/inputs/additional.gtf" if 'additional_gtf' in config['genome'] else [],
         expand(DATA+"/inputs/{name}_{rx}.fastq.gz", name = SAMPLES_NAMES, rx = ['R1','R2'])
 
-rule copy_genome_fna:
-    input: config['genome']['fna']
-    output: DATA+"/inputs/genome.fna"
-    shell: "cp -a {input} {output}"
-        
-rule copy_genome_gtf:
-    input: config['genome']['gtf']
-    output: DATA+"/inputs/genome.gtf"
-    shell: "cp -a {input} {output}"
+if 'gbk' in config['genome']:
+    rule copy_genome_gbk:
+        input: config['genome']['gbk']
+        output: DATA+"/inputs/genome.gbk"
+        shell: "cat {input} > {output}"
+    rule split_genome_gbk:
+        input: DATA+"/inputs/genome.gbk"
+        output:
+            gff=DATA+"/inputs/genome.gff",
+            fna=DATA+"/inputs/genome.fna"
+        conda: "envs/perl-bioperl.yaml"
+        shell:
+            """
+            bp_genbank2gff3.pl --outdir {DATA}/inputs/temp --split {input}
+            cat {DATA}/inputs/temp/*.gff > {output.gff}
+            cat {DATA}/inputs/temp/*.fa > {output.fna}
+            """
+    rule make_genome_gtf:
+        input: DATA+"/inputs/genome.gff"
+        output: DATA+"/inputs/genome.gtf"
+        conda: "envs/agat.yaml"
+        shell: "agat_convert_sp_gff2gtf.pl --gff {input} -o {output} >/dev/null"
+
+if 'fna' in config['genome']:
+    rule copy_genome_fna:
+        input: config['genome']['fna']
+        output: DATA+"/inputs/genome.fna"
+        shell: "cat {input} > {output}"
+
+if 'gtf' in config['genome']:
+    rule copy_genome_gtf:
+        input: config['genome']['gtf']
+        output: DATA+"/inputs/genome.gtf"
+        shell: "cat {input} > {output}"
 
 if 'additional_gtf' in config['genome']:
     rule copy_additional_gtf:
         input: config['genome']['additional_gtf']
         output: DATA+"/inputs/additional.gtf"
-        shell: "cp -a {input} {output}"
+        shell: "cat {input} > {output}"
         
 rule make_annotations_gtf:
     input: 
@@ -75,11 +100,29 @@ rule make_annotations_gtf:
     output: DATA+"/inputs/annotations.gtf"
     shell: "cat {input} > {output}"
 
+SAMPLES_PREFIX=os.path.expanduser(config['samples_dir']+'/') if 'samples_dir' in config else ''
+
 rule copy_fq:
-    input: lambda wildcards: config['samples'][wildcards.name][wildcards.rx]
+    input: lambda wildcards: SAMPLES_PREFIX+config['samples'][wildcards.name][wildcards.rx]
     output: DATA+"/inputs/{name}_{rx}.fastq.gz"
-    shell: "cp -a {input} {output}"
+    shell: "cat {input} > {output}"
     
+rule bioperl_version:
+    output: DATA+"/versions/bioperl.txt"
+    conda: "envs/perl-bioperl.yaml"
+    shell:
+        """
+        perl -MBio::Perl -e 'print $Bio::Perl::VERSION,"\n";' | tee {output}
+        """
+
+rule agat_version:
+    output: DATA+"/versions/agat.txt"
+    conda: "envs/agat.yaml"
+    shell:
+        """
+        agat --version 2>&1 | tee {output}
+        """   
+
 # ------------------------------------------------------------------------
 # Run Falco
 # ------------------------------------------------------------------------
