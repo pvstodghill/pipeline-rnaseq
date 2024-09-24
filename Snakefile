@@ -108,7 +108,7 @@ rule copy_fq:
     shell: "cat {input} > {output}"
     
 rule bioperl_version:
-    output: DATA+"/versions/bioperl.txt"
+    output: DATA+"/versions/perl-bioperl.txt"
     conda: "envs/perl-bioperl.yaml"
     shell:
         """
@@ -269,7 +269,7 @@ rule make_bam:
 # ------------------------------------------------------------------------
 
 rule test_strand:
-    input: DATA+"/strands/results.sh"
+    input: DATA+"/strand/results.sh"
 
 rule make_strand_targets:
     input: DATA+"/inputs/annotations.gtf"
@@ -277,9 +277,9 @@ rule make_strand_targets:
     shell:
         """
         cat {input} \
-            | fgrep $'\t'gene$'\t' \
             | perl {PIPELINE}/scripts/sanitize-gtf-for-featureCounts \
-                   > {output}
+        	-f gene \
+                > {output}
         """
 
 rule featureCount_version:
@@ -329,14 +329,14 @@ rule make_strand_reverse_txt:
 if "orientation" in config:
     rule make_strand_sh:
         input:
-        output: DATA+"/strands/results.sh"
+        output: DATA+"/strand/results.sh"
         shell: "echo ORIENTATION="+config['orientation']+" >> {output}"
 else:
     rule make_strand_sh:
         input:
             f=DATA+"/strand/forward.txt",
             r=DATA+"/strand/reverse.txt"
-        output: DATA+"/strands/results.sh"
+        output: DATA+"/strand/results.sh"
         shell:
             """
             {PIPELINE}/scripts/rnaseq-strand-analysis.pl \
@@ -354,7 +354,7 @@ rule make_profiles:
 rule make_profile:
     input:
         bam=DATA+"/bowtie2/{name}.bam",
-        orientation=DATA+"/strands/results.sh"
+        orientation=DATA+"/strand/results.sh"
     output: DATA+"/profiles/.done.{name}"
     params:
         name="{name}",
@@ -393,7 +393,7 @@ rule run_featureCounts:
     input:
         gtf=DATA+"/counts/annotations.gtf",
         bam=DATA+"/bowtie2/{name}.bam",
-        orientation=DATA+"/strands/results.sh"
+        orientation=DATA+"/strand/results.sh"
     output: DATA+"/counts/counts_{name}.txt"
     conda: "envs/subread.yaml"
     shell:
@@ -540,7 +540,7 @@ rule make_changed_gff:
 # Get package versions
 # ------------------------------------------------------------------------
 
-rule get_versions:
+rule make_versions:
     input: VERSIONS_RESULTS
 
 # ------------------------------------------------------------------------
