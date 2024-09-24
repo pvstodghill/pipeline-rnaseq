@@ -1,8 +1,9 @@
 .bash_history
-.snakemake
 .cache
 .java
+.snakemake
 /.htaccess
 /.jbrowse-ignore
 /config.yaml
 /data/
+/genome.agat.log
