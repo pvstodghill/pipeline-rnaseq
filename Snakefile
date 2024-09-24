@@ -72,8 +72,13 @@ if 'gbk' in config['genome']:
     rule make_genome_gtf:
         input: DATA+"/inputs/genome.gff"
         output: DATA+"/inputs/genome.gtf"
-        conda: "envs/agat.yaml"
-        shell: "agat_convert_sp_gff2gtf.pl --gff {input} -o {output} >/dev/null"
+        shell:
+            """
+            cat {input} \
+            | fgrep $'\t'gene$'\t' \
+            | {PIPELINE}/scripts/gff2gtf \
+            > {output}
+            """
 
 if 'fna' in config['genome']:
     rule copy_genome_fna:
@@ -114,14 +119,6 @@ rule bioperl_version:
         """
         perl -MBio::Perl -e 'print $Bio::Perl::VERSION,"\n";' | tee {output}
         """
-
-rule agat_version:
-    output: DATA+"/versions/agat.txt"
-    conda: "envs/agat.yaml"
-    shell:
-        """
-        agat --version 2>&1 | tee {output}
-        """   
 
 # ------------------------------------------------------------------------
 # Run Falco
