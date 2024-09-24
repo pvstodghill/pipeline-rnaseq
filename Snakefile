@@ -28,7 +28,7 @@ DESEQ2_RESULTS = \
 
 VERSIONS_RESULTS = \
     expand(DATA+"/versions/{pkg}.txt",
-           pkg = list(map((lambda p: os.path.splitext(os.path.basename(p))[0] ),glob.glob("envs/*.yaml")))),
+           pkg = list(map((lambda p: os.path.splitext(os.path.basename(p))[0] ),glob.glob(PIPELINE+"/envs/*.yaml")))),
 
 GIT_RESULTS = DATA+"/git.log"
 
