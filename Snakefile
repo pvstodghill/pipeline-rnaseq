@@ -21,6 +21,8 @@ PROFILE_RESULTS = \
     expand(DATA+"/profiles/.done.{name}",
            name = SAMPLES_NAMES),
 
+SOUS_RESULTS = DATA+"/sous/.done"
+
 DESEQ2_RESULTS = \
     expand(DATA+"/deseq2/changed_{tag}.gff", tag=EXPS_NAMES) \
     + expand(DATA+"/deseq2/results_{tag}.gff", tag=EXPS_NAMES) \
@@ -37,6 +39,7 @@ rule all:
         FALCO_RESULTS, \
         DESEQ2_RESULTS, \
         PROFILE_RESULTS, \
+        SOUS_RESULTS, \
         VERSIONS_RESULTS, \
         GIT_RESULTS,
 
@@ -336,7 +339,7 @@ else:
             {input.r}
             """
 # ------------------------------------------------------------------------
-# Make profiles
+# Make Sinister and Naive profiles
 # ------------------------------------------------------------------------
 
 rule make_profiles:
@@ -364,6 +367,21 @@ rule make_profile:
 				 -e -s -n \
 				 -d $(dirname {output}) \
 				 -t {params.name}
+        touch {output}
+        """
+
+# ------------------------------------------------------------------------
+# Make SOUS profiles
+# ------------------------------------------------------------------------
+
+rule make_sous:
+    input: DATA+"/inputs/genome.fna"
+    output: DATA+"/sous/.done"
+    params:
+        outdir=DATA+"/sous"
+    shell:
+        """
+        sous -d {params.outdir} -t sous -u uniqueuess {input}
         touch {output}
         """
 
