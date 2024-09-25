@@ -381,7 +381,7 @@ rule make_sous:
         outdir=DATA+"/sous"
     shell:
         """
-        sous -d {params.outdir} -t sous -u uniqueuess {input}
+        {PIPELINE}/sous/sous -d {params.outdir} -t sous -u uniqueuess {input}
         touch {output}
         """
 
