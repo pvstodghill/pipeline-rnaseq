@@ -57,17 +57,19 @@ if 'gbk' in config['genome']:
         input: config['genome']['gbk']
         output: DATA+"/inputs/genome.gbk"
         shell: "cat {input} > {output}"
-    rule split_genome_gbk:
+    rule make_genome_fna:
         input: DATA+"/inputs/genome.gbk"
-        output:
-            gff=DATA+"/inputs/genome.gff",
-            fna=DATA+"/inputs/genome.fna"
-        conda: "envs/perl-bioperl.yaml"
+        output: DATA+"/inputs/genome.fna"
         shell:
             """
-            bp_genbank2gff3.pl --outdir {DATA}/inputs/temp --split {input}
-            cat {DATA}/inputs/temp/*.gff > {output.gff}
-            cat {DATA}/inputs/temp/*.fa > {output.fna}
+            {PIPELINE}/scripts/gbk2fna < {input} > {output}
+            """
+    rule make_genome_gff:
+        input: DATA+"/inputs/genome.gbk"
+        output: DATA+"/inputs/genome.gff"
+        shell:
+            """
+            {PIPELINE}/scripts/gbk2gff < {input} > {output}
             """
     rule make_genome_gtf:
         input: DATA+"/inputs/genome.gff"
@@ -112,14 +114,6 @@ rule copy_fq:
     output: DATA+"/inputs/{name}_{rx}.fastq.gz"
     shell: "cat {input} > {output}"
     
-rule bioperl_version:
-    output: DATA+"/versions/perl-bioperl.txt"
-    conda: "envs/perl-bioperl.yaml"
-    shell:
-        """
-        perl -MBio::Perl -e 'print $Bio::Perl::VERSION,"\n";' | tee {output}
-        """
-
 # ------------------------------------------------------------------------
 # Run Falco
 # ------------------------------------------------------------------------
