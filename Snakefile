@@ -356,6 +356,7 @@ rule make_profile:
         bam=DATA+"/bowtie2/{name}.bam",
         orientation=DATA+"/strands/results.sh"
     output: DATA+"/profiles/.done.{name}"
+    conda: "envs/samtools.yaml"
     params:
         name="{name}",
     shell:
