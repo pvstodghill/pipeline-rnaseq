@@ -3,4 +3,7 @@ channels:
   - bioconda
 dependencies:
   - bioconductor-deseq2
+  - bioconductor-genomeinfodb
+  - r-rcurl
+
 
