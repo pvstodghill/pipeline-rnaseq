@@ -21,6 +21,8 @@ PROFILE_RESULTS = \
     expand(DATA+"/profiles/.done.{name}",
            name = SAMPLES_NAMES),
 
+SOUS_RESULTS = DATA+"/sous/.done"
+
 DESEQ2_RESULTS = \
     expand(DATA+"/deseq2/changed_{tag}.gff", tag=EXPS_NAMES) \
     + expand(DATA+"/deseq2/results_{tag}.gff", tag=EXPS_NAMES) \
@@ -28,7 +30,7 @@ DESEQ2_RESULTS = \
 
 VERSIONS_RESULTS = \
     expand(DATA+"/versions/{pkg}.txt",
-           pkg = list(map((lambda p: os.path.splitext(os.path.basename(p))[0] ),glob.glob("envs/*.yaml")))),
+           pkg = list(map((lambda p: os.path.splitext(os.path.basename(p))[0] ),glob.glob(PIPELINE+"/envs/*.yaml")))),
 
 GIT_RESULTS = DATA+"/git.log"
 
@@ -37,6 +39,7 @@ rule all:
         FALCO_RESULTS, \
         DESEQ2_RESULTS, \
         PROFILE_RESULTS, \
+        SOUS_RESULTS, \
         VERSIONS_RESULTS, \
         GIT_RESULTS,
 
@@ -57,23 +60,30 @@ if 'gbk' in config['genome']:
         input: config['genome']['gbk']
         output: DATA+"/inputs/genome.gbk"
         shell: "cat {input} > {output}"
-    rule split_genome_gbk:
+    rule make_genome_fna:
         input: DATA+"/inputs/genome.gbk"
-        output:
-            gff=DATA+"/inputs/genome.gff",
-            fna=DATA+"/inputs/genome.fna"
-        conda: "envs/perl-bioperl.yaml"
+        output: DATA+"/inputs/genome.fna"
         shell:
             """
-            bp_genbank2gff3.pl --outdir {DATA}/inputs/temp --split {input}
-            cat {DATA}/inputs/temp/*.gff > {output.gff}
-            cat {DATA}/inputs/temp/*.fa > {output.fna}
+            {PIPELINE}/scripts/gbk2fna < {input} > {output}
+            """
+    rule make_genome_gff:
+        input: DATA+"/inputs/genome.gbk"
+        output: DATA+"/inputs/genome.gff"
+        shell:
+            """
+            {PIPELINE}/scripts/gbk2gff < {input} > {output}
             """
     rule make_genome_gtf:
         input: DATA+"/inputs/genome.gff"
         output: DATA+"/inputs/genome.gtf"
-        conda: "envs/agat.yaml"
-        shell: "agat_convert_sp_gff2gtf.pl --gff {input} -o {output} >/dev/null"
+        shell:
+            """
+            cat {input} \
+            | fgrep $'\t'gene$'\t' \
+            | {PIPELINE}/scripts/gff2gtf \
+            > {output}
+            """
 
 if 'fna' in config['genome']:
     rule copy_genome_fna:
@@ -269,7 +279,7 @@ rule make_bam:
 # ------------------------------------------------------------------------
 
 rule test_strand:
-    input: DATA+"/strands/results.sh"
+    input: DATA+"/strand/results.sh"
 
 rule make_strand_targets:
     input: DATA+"/inputs/annotations.gtf"
@@ -277,9 +287,9 @@ rule make_strand_targets:
     shell:
         """
         cat {input} \
-            | fgrep $'\t'gene$'\t' \
             | perl {PIPELINE}/scripts/sanitize-gtf-for-featureCounts \
-                   > {output}
+        	-f gene \
+                > {output}
         """
 
 rule featureCount_version:
@@ -329,14 +339,14 @@ rule make_strand_reverse_txt:
 if "orientation" in config:
     rule make_strand_sh:
         input:
-        output: DATA+"/strands/results.sh"
+        output: DATA+"/strand/results.sh"
         shell: "echo ORIENTATION="+config['orientation']+" >> {output}"
 else:
     rule make_strand_sh:
         input:
             f=DATA+"/strand/forward.txt",
             r=DATA+"/strand/reverse.txt"
-        output: DATA+"/strands/results.sh"
+        output: DATA+"/strand/results.sh"
         shell:
             """
             {PIPELINE}/scripts/rnaseq-strand-analysis.pl \
@@ -345,7 +355,7 @@ else:
             {input.r}
             """
 # ------------------------------------------------------------------------
-# Make profiles
+# Make Sinister and Naive profiles
 # ------------------------------------------------------------------------
 
 rule make_profiles:
@@ -354,7 +364,7 @@ rule make_profiles:
 rule make_profile:
     input:
         bam=DATA+"/bowtie2/{name}.bam",
-        orientation=DATA+"/strands/results.sh"
+        orientation=DATA+"/strand/results.sh"
     output: DATA+"/profiles/.done.{name}"
     conda: "envs/samtools.yaml"
     params:
@@ -378,6 +388,21 @@ rule make_profile:
         """
 
 # ------------------------------------------------------------------------
+# Make SOUS profiles
+# ------------------------------------------------------------------------
+
+rule make_sous:
+    input: DATA+"/inputs/genome.fna"
+    output: DATA+"/sous/.done"
+    params:
+        outdir=DATA+"/sous"
+    shell:
+        """
+        {PIPELINE}/sous/sous -d {params.outdir} -t sous -u uniqueuess {input}
+        touch {output}
+        """
+
+# ------------------------------------------------------------------------
 # Make count files
 # ------------------------------------------------------------------------
 
@@ -394,7 +419,7 @@ rule run_featureCounts:
     input:
         gtf=DATA+"/counts/annotations.gtf",
         bam=DATA+"/bowtie2/{name}.bam",
-        orientation=DATA+"/strands/results.sh"
+        orientation=DATA+"/strand/results.sh"
     output: DATA+"/counts/counts_{name}.txt"
     conda: "envs/subread.yaml"
     shell:
@@ -541,7 +566,7 @@ rule make_changed_gff:
 # Get package versions
 # ------------------------------------------------------------------------
 
-rule get_versions:
+rule make_versions:
     input: VERSIONS_RESULTS
 
 # ------------------------------------------------------------------------

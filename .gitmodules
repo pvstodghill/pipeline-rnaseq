@@ -1,3 +1,6 @@
 [submodule "scripts"]
 	path = scripts
 	url = ../scripts.git
+[submodule "sous"]
+	path = sous
+	url = ../sous.git
