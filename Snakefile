@@ -108,7 +108,7 @@ rule copy_fq:
     shell: "cat {input} > {output}"
     
 rule bioperl_version:
-    output: DATA+"/versions/bioperl.txt"
+    output: DATA+"/versions/perl-bioperl.txt"
     conda: "envs/perl-bioperl.yaml"
     shell:
         """
