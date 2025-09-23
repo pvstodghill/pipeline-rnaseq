@@ -42,13 +42,15 @@ To run the pipeline on your own data,
 To run the pipeline using local copies of the software components:
 
 ~~~
-snakemake
+snakemake --cores 32
 ~~~
+
+Change `32` to the number of threads you want to us.
 
 To run the pipeline using [Conda](https://conda.io) to provide software components:
 
 ~~~
-snakemake --use-conda
+snakemake --use-conda --cores 32
 ~~~
 
 To run the pipeline using [Mamba](https://mamba.readthedocs.io) to provide software components:
