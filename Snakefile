@@ -21,7 +21,7 @@ PROFILE_RESULTS = \
     expand(DATA+"/profiles/.done.{name}",
            name = SAMPLES_NAMES),
 
-SOUS_RESULTS = DATA+"/sous/.done"
+SOUS_RESULTS = ([] if 'sous' in config and not config['sous'] else DATA+"/sous/.done")
 
 DESEQ2_RESULTS = \
     expand(DATA+"/deseq2/changed_{tag}.gff", tag=EXPS_NAMES) \
