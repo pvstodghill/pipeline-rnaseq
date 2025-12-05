@@ -435,7 +435,6 @@ rule run_featureCounts:
         featureCounts \
         -O -p --countReadPairs -B -P -C -s $s \
         -t gene -g gene_id -f \
-        -s 1 \
         -a {input.gtf} \
         -o {output} \
 	{input.bam}
